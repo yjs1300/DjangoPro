@@ -15,20 +15,13 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-<<<<<<< HEAD
-from django.urls import include, path
-=======
 from django.urls import path,include
->>>>>>> 5dcc13f9301005d5c647f78b2c7d548692a6f9c0
 from bicycleapp import views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", views.homeFunc),
-<<<<<<< HEAD
-    path("chartapp/", include('chartapp.urls'))
-=======
+    path("chartapp/", include('chartapp.urls')),
     path("report/", include("Report.urls")), # app name = Report의 url
    
->>>>>>> 5dcc13f9301005d5c647f78b2c7d548692a6f9c0
 ]
