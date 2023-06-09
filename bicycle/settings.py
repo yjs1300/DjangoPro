@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     "bicycleapp",
     "chartapp",
     "Report",
-
 ]
 
 MIDDLEWARE = [
