@@ -38,8 +38,12 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "bicycleapp",
+<<<<<<< HEAD
     "chartapp",
 
+=======
+    "Report",
+>>>>>>> 5dcc13f9301005d5c647f78b2c7d548692a6f9c0
 ]
 
 MIDDLEWARE = [
@@ -77,9 +81,13 @@ WSGI_APPLICATION = "bicycle.wsgi.application"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': '1team_f',
+        'USER': 'root',
+        'PASSWORD': 'kor123',
+        'HOST': '61.74.225.3',
+        'PORT': '3306',
     }
 }
 
