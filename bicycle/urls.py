@@ -21,5 +21,6 @@ from bicycleapp import views
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", views.homeFunc),
+    path("chartapp/", include('chartapp.urls')),
     path("report/", include("Report.urls")), # app name = Report의 url
 ]
