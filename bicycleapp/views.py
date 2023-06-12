@@ -10,7 +10,7 @@ def homeFunc(request):
 #test 230610 jujuclubw
 
 # 로그인 관련 로직 작성 진행함. 
-# 
+# 23.06.12
 def login(request):
     return render(request, "account.html")
         
