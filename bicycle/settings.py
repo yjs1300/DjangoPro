@@ -37,8 +37,12 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+<<<<<<< HEAD
+    "bicycleapp",
+=======
     "bicycleapp", 
     "ShowMap",
+>>>>>>> 584bdf312564d41fad000d526cab7aa35f884d3b
     "Report",
 ]
 
