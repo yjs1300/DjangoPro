@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "bicycleapp", 
     "ShowMap",
     "Report",
+    "ShowStat",
 ]
 
 MIDDLEWARE = [

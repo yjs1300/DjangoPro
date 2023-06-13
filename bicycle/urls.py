@@ -24,4 +24,5 @@ urlpatterns = [
     path("login/", views.login), # 로그인 페이지
     path("showmap/", include('ShowMap.urls')), # 메인페이지 지도 보여줌
     path("report/", include("Report.urls")), # app name = Report의 url
+    path("statistics/", include("ShowStat.urls")), # 통계 페이지 @jujuclubw 230613
 ]
