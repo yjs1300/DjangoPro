@@ -13,4 +13,4 @@ def homeFunc(request):
 # 23.06.12
 def login(request):
     return render(request, "account.html")
-        
+   
