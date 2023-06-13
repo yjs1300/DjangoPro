@@ -73,8 +73,9 @@ def rental(request):
 
 def chart(request):
         
-    
-    
+    # df = pd.read_csv("", encoding=)
+    df = pd.read_csv('rentalnumber.csv', encoding="cp949")
+    df_json = df.to_json(orient='records')
     
     
     return render(request,"chart.html")
