@@ -1,4 +1,4 @@
-from django.shortcuts import HttpResponse, HttpResponseRedirect, render
+from django.shortcuts import redirect, HttpResponse, HttpResponseRedirect, render
 import folium
 from folium.plugins import MarkerCluster
 import pandas as pd
@@ -72,7 +72,7 @@ def rental(request):
 
 
 def chart(request):
-    
+        
     
     
     
