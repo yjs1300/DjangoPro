@@ -90,6 +90,10 @@ def jeju_analysis(request):
     model = joblib.load('static/model/MLP.pkl') 
     # 예측 수행
     y_pred = model.predict(X_scaled)
-    print(y_pred)
-    return render(request,"analysis.html")
+    df_pred = pd.DataFrame({'예측값': y_pred})
+    # X 값과 예측된 y 값을 합치기
+    df_result = pd.concat([X, df_pred], axis=1)
+    print(df_result)
+    
+    return render(request,"analysis.html",{'result':df_result.to_html()})
 
