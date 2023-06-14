@@ -2,7 +2,7 @@ from django.shortcuts import redirect, HttpResponse, HttpResponseRedirect, rende
 from django.http import JsonResponse
 import json
 import folium
-from folium.plugins import MarkerCluster
+from folium.plugins import MarkerCluster,FastMarkerCluster
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -29,6 +29,7 @@ def rental(request):
     coords = sub
     # marker cluster 객채를 생성
     marker_cluster = MarkerCluster().add_to(m)
+   
     
     # 데이터의 위도, 경도를 받아서 마커를 생성함.
     for lat, long in zip(coords['위도'], coords['경도']):
