@@ -1,11 +1,11 @@
 from django.shortcuts import redirect, HttpResponse, HttpResponseRedirect, render
+from django.http import JsonResponse
+import json
 import folium
 from folium.plugins import MarkerCluster
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-
-
 
 
 # Create your views here.
@@ -23,6 +23,7 @@ def rental(request):
     latitude = 37.541
     # 서울시 경도
     longitude = 126.986
+    
     # 지도 생성
     m = folium.Map(
         location=[latitude, longitude],
@@ -67,15 +68,21 @@ def rental(request):
         folium.Marker([lat, long], icon = folium.Icon(color="green")).add_to(marker_cluster)
     
     # 템플릿에 보내기 위해서 사용함.
-    map2 = m2._repr_html_()   
+    map2 = m2._repr_html_() 
+   
+      
     return render(request,'submap.html',{'map':maps,'map2':map2})
 
 
+
 def chart(request):
-        
-    # df = pd.read_csv("", encoding=)
-    df = pd.read_csv('rentalnumber.csv', encoding="cp949")
-    df_json = df.to_json(orient='records')
     
+    # 데이터프레임을 JSon으로 변환
+    df = pd.read_csv("../rentalnumber.csv", encoding="cp949")
+    chartdata = df.to_json(orient='records',force_ascii=False)  
+    chartdata = json.dumps(chartdata) # 디코딩
+    chartdata = json.loads(chartdata) # 인코딩
     
-    return render(request,"chart.html")
+    context= {'chartdata':chartdata}
+    
+    return render(request,"chart.html", context) # Json 데이터 전달함.

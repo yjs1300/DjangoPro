@@ -18,7 +18,7 @@
     }
     
     .sidenav {
-      width: 130px;
+      width: 80px;
       position: fixed;
       z-index: 1;
       top: 300px;
@@ -29,9 +29,9 @@
     }
     
     .sidenav a {
-      padding: 6px 8px 6px 16px;
+      padding: 6px 8px 6px 10px;
       text-decoration: none;
-      font-size: 25px;
+      font-size: 15px;
       color: #eee;
       display: block;
     }
@@ -51,10 +51,12 @@
 </head>
 <body>
   <div class="sidenav">
-    <a href="#about">About</a>
-    <a href="#services">Services</a>
-    <a href="#clients">Clients</a>
-    <a href="#contact">Contact</a>
+    <a href="/">Home</a>
+    <a href="#">Top</a>
+    <a id="분석" href="#">분석</a>
+    <a id="현황" href="#">현황</a>
+    <a id="통계" href="#">통계</a>
+    <a id="report" href="#">보고서</a>
   </div>
   <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
     <div class="container-fluid">
@@ -76,18 +78,21 @@
             <a class="nav-link" id='통계' href="#">통계</a>
           </li>
           <li class="nav-item">
+            <a class="nav-link" id='현황' href="#">현황</a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" id=report href="#">보고서</a>
           </li>
-          <li class="nav-item dropdown">
+          {% comment %} <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-            <div class="dropdown-menu">
+            {% comment %} <div class="dropdown-menu">
               <a class="dropdown-item" href="#">Action</a>
               <a class="dropdown-item" href="#">Another action</a>
               <a class="dropdown-item" href="#">Something else here</a>
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="#">Separated link</a>
-            </div>
-          </li>
+            </div> 
+          </li> {% endcomment %}
         </ul>
         {% comment %} <form class="d-flex">
           <input class="form-control me-sm-2" type="search" placeholder="Search">
@@ -97,7 +102,7 @@
     </div>
   </nav>
   </div>
-  <div class="container main">
+  <div class="container">
     {% block content %}
       
     {% endblock %}
@@ -118,6 +123,11 @@
       $('#통계').click(function(event){
         event.preventDefault();
         location.href = 'http://127.0.0.1:8000/report/report'
+      });
+
+      $('#현황').click(function(event){
+        event.preventDefault();
+        location.href = 'http://127.0.0.1:8000/showmap/submap'
       });
 
     var sidebarWidth = document.querySelector('.sidenav').offsetWidth;
