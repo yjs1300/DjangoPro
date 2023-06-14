@@ -30,12 +30,14 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
-                    
-                        <li class="nav-item"><a class="nav-link" href="{% url 'Login:login' %}">로그인</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'Login:logout' %}">로그아웃</a></li>
+                        {% if request.session.user %}
+                        <li class="nav-item"><a class="nav-link" href="/login/logout">로그아웃</a></li>
+                        {% else %}
+                        <li class="nav-item"><a class="nav-link" href="login/">로그인</a></li>
+                        {% endif %}
                         <li class="nav-item"><a class="nav-link" href="showchart/charts">분석</a></li>
                         <li class="nav-item"><a class="nav-link" href="statistics/">통계</a></li>
-                        <li class="nav-item"><a class="nav-link" href="showmap/submap">현황</a></li>
+                        <li class="nav-item"><a class="nav-link" href="submap/submap">현황</a></li>
                         <li class="nav-item"><a class="nav-link" href="report/report">보고서</a></li>
                     </ul>
                 </div>
