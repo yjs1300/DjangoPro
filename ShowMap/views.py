@@ -1,13 +1,71 @@
 from django.shortcuts import render
+<<<<<<< HEAD
+import pickle
+import pandas as pd
+import numpy as np
+
+=======
 from .models import JejuFacility
 import pandas as pd
 import numpy as np
+>>>>>>> dev
 
 from sklearn.preprocessing import StandardScaler
     # 지도 보여주기 
 def showmap(request):
     return render(request, "map.html")
 
+<<<<<<< HEAD
+
+#=================================================================
+    
+def mapanal(request):
+    data_merge = pd.read_csv('C://Users//yjs60//Documents//GitHub//team1_main//ShowMap//static//output//jeju_merged_location.csv', encoding='utf-8')
+
+    knnModel=0
+    with open(file='C://Users//yjs60//Documents//GitHub//team1_main//ShowMap//static//output///MLmodel//knn_model_6.h5', mode='rb') as f:
+        knnModel=pickle.load(f)
+        
+    # 결과 데이터프레임 초기화
+    #result_data = pd.DataFrame(columns=['장소명', '자전거도로', '정류장', '공원', '관광지','학교','총이동'])
+    result_data = pd.DataFrame(columns=['자전거도로','지하철역','공원','관광지','대학','총이동'])
+    result_data['총이동']=0
+    
+    # 거리 계산을 위한 데이터프레임 복사 및 컬럼 추가
+    temp_result = data_merge.copy()
+    temp_result['최단거리'] = 0.0
+    temp_result['총이동'] = 0.0
+
+    print(request.GET['juso1'],request.GET['lat1'],request.GET['lng1'])
+    juso1=request.GET['juso1']
+    lat1=float(request.GET['lat1'])
+    lng1=float(request.GET['lng1'])
+    
+    temp_result['장소명'] = juso1
+
+    # 유클리드 거리 계산
+    temp_result['최단거리'] = np.sqrt(
+        np.power(temp_result['경도'] - lat1, 2) +
+        np.power(temp_result['위도'] - lng1, 2)
+    )
+    
+    # 주제별 최단거리를 구하기 위해 그룹화하여 최소값 선택
+    temp_result = temp_result.groupby(['장소명', '주제'])['최단거리'].min().reset_index()
+    temp_result = temp_result.pivot(index='장소명', columns='주제', values='최단거리').reset_index()
+
+    # 결과 데이터프레임에 추가
+    result_data = pd.concat([result_data, temp_result], ignore_index=True)
+
+    # 결과 출력
+    print(result_data)
+    
+    res_y=knnModel.predict(result_data)
+    
+    print(res_y)
+
+    #knnModel.predict()
+    return render(request, "map.html")
+=======
 #  * @author jujuclubw
 #  * @email dlrkdwn428@gmail.com
 #  * @create date 2023-06-14 14:01:59
@@ -103,3 +161,4 @@ def jeju_analysis(request):
     print(df_result)
     
     return render(request,"analysis.html",{'result':df_result.to_html()})
+>>>>>>> dev
