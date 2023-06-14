@@ -5,10 +5,12 @@ from . import views
 app_name = "Login"
 urlpatterns = [
   # 로그인 기능
-  path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'), # 수정해야하는 코드
+  path('',views.login), # 수정해야하는 코드
   # django.contrib.auth앱의 LoginView 클래스를 활용했으므로 별도의 views.py 파일 수정이 필요 없음
+  
   # 로그아웃 기능
-  path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+  path('logout/',views.logout),
+  
   # 회원가입 기능
   path('signup/',views.signup, name='signup')
 ]

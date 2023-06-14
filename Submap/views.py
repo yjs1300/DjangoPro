@@ -69,7 +69,7 @@ def rental(request):
     return render(request,'submap.html',{'map':maps,'map2':map2})
 
 
-
+# chart.js
 def chart(request):
     
     # 데이터프레임을 JSon으로 변환

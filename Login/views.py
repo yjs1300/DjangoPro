@@ -2,29 +2,63 @@
 # from django.contrib.auth import authenticate, login
 # from django.shortcuts import redirect
 # from Login.forms import UserForm
-from django.shortcuts import render
-from django.shortcuts import render
-from django.http import HttpResponse
-from django.contrib.auth.hashers import make_password
-from .models import User
+from django.shortcuts import render,redirect
+from django.contrib.sessions.models import Session
+from . models import Member
 
+
+def login(request):
+    if request.method == "GET":
+        return render(request, "login.html")
+    elif request.method == "POST":
+        m_id = request.POST.get('account')
+        m_pwd = request.POST.get('password')
+        errMsg = {}
+        context= {}
+        if not (m_id and m_pwd):
+            errMsg["err"] = "모든 값을 입력하세요"
+            
+        else:
+            user = Member.objects.get(m_id=m_id)
+            print('m_pwd :', m_pwd)
+            print('user.m_pwd :', user.m_pwd)
+            if (m_pwd == user.m_pwd ):
+                request.session['user'] = user.m_id
+                
+                print('로그인 성공')
+                return redirect('/') # 로그인 성공시 홈으로 이동함.
+            else:
+                errMsg['error'] = "비밀번호를 입력하세요"
+                print('로그인 실패')
+        print('ㅎㅎㅎㅎㅎㅎ')
+        return render(request, "login.html", errMsg)
+                 
+                   
+                 
+# 회원가입기능 구현 중
 def signup(request): 
     if request.method =="GET":
-        return render(request,'signup.html')
+        return render(request,'login.html')
     elif request.method == "POST": 
-        username = request.POST.get['username', None] 
-        password = request.POST.get['password', None]  
-        email = request.POST.get['email', None]
-        name = request.POST.get['name', None]
-        re_password = request.POST.get['re_password',None]
+        m_id = request.POST.get('account')
+        m_name = request.POST.get('username') 
+        m_pwd = request.POST.get('password')  
+        m_email = request.POST.get('email')
+        
         res_data = {}
-        if not (username and password and re_password):
+        
+        if not (m_id and m_pwd):
             res_data["error"] = "모든 값을 입력해야 합니다."
-        if password != re_password:
-            res_data["error"] = "비밀번호가 일치하지 않습니다."
         else:
-            user = User(username = username, password = make_password(password))
+            user = Member(m_id = m_id, m_name=m_name ,m_pwd = m_pwd, m_email = m_email)
             user.save()
+        return redirect("/login")
+
+# 로그아웃
+def logout(request):
+    del(request.session['user'])
+    return redirect("/")
+
 
 # Create your views here.
 # authenticate() django의 인증기능
