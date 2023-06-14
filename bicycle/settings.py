@@ -43,12 +43,8 @@ INSTALLED_APPS = [
     "ShowMap",
     "Report",
     "ShowStat",
-<<<<<<< HEAD
-    "Login"
-    
-=======
+    "Login",
     "ShowChart",
->>>>>>> 32a8f025a0a7500f321435d3e76b3e7793afbf21
 ]
 
 MIDDLEWARE = [
