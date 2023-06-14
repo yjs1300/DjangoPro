@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     "ShowMap",
     "Report",
     "ShowStat",
-    "Login"
+    "Login",
+    "Submap",
     
 ]
 
