@@ -30,6 +30,7 @@ ALLOWED_HOSTS = []
 
 # Application definition
 # 메인페이지, 지도, 보고서, 로그인
+# 로그인 앱 신규 추가함.(06.13)
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -42,6 +43,8 @@ INSTALLED_APPS = [
     "ShowMap",
     "Report",
     "ShowStat",
+    "Login"
+    
 ]
 
 MIDDLEWARE = [
@@ -78,15 +81,21 @@ WSGI_APPLICATION = "bicycle.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# 로그인 테스트를 진행하기 위함.
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': '1team_f',
-        'USER': 'root',
-        'PASSWORD': 'kor123',
-        'HOST': '61.74.225.3',
-        'PORT': '3306',
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': '1team_f',
+    #     'USER': 'root',
+    #     'PASSWORD': 'kor123',
+    #     'HOST': '61.74.225.3',
+    #     'PORT': '3306',
+    # }
+     "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
     }
+    
 }
 
 
@@ -112,7 +121,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "ko-kr"
 
 TIME_ZONE = "UTC"
 
@@ -127,7 +136,8 @@ USE_TZ = True
 import os
 STATIC_URL = "static/"
 STATICFILES_DIRS =[
-    os.path.join(BASE_DIR,"bicycleapp","static")
+    os.path.join(BASE_DIR,"bicycleapp","static"),
+    os.path.join(BASE_DIR,"ShowMap"),
 ]
 # STATIC_ROOT = os.path.join(BASE_DIR,'static')
 
@@ -135,3 +145,9 @@ STATICFILES_DIRS =[
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# 로그인 후 이동경로
+LOGIN_REDIRECT_URL = "/" 
+
+# 로그아웃 후 이동경로
+LOGOUT_REDIRECT_URL = "/"
