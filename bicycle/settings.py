@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "ShowMap",
     "Report",
     "ShowStat",
+    "ShowChart",
 ]
 
 MIDDLEWARE = [
