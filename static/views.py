@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 
 from sklearn.preprocessing import StandardScaler
-    # 지도 보여주기  
+    # 지도 보여주기 
 def showmap(request):
     return render(request, "map.html")
 
@@ -42,7 +42,7 @@ def uclid_process(data_merge,spot_data):
         # 결과 데이터프레임에 추가
         result_data = pd.concat([result_data, temp_result], ignore_index=True)
     return result_data
-        
+
 #  * @author jujuclubw
 #  * @email dlrkdwn428@gmail.com
 #  * @create date 2023-06-14 11:46:55
@@ -64,8 +64,8 @@ def jeju_analysis(request):
         f_datas.append(dic)
         
     jeju_facility_df = pd.DataFrame(f_datas)
-    jeju_facility_df = jeju_facility_df[(jeju_facility_df['경도'] >= -180) & (jeju_facility_df['경도'] <= 180)]
-
+    # jeju_facility_df = jeju_facility_df[(jeju_facility_df['경도'] >= -180) & (jeju_facility_df['경도'] <= 180)]
+    # print(jeju_facility_df)
     #선택한 제주 위경도
     ping = {
         '장소명':[request.POST['juso1'],request.POST['juso2'],request.POST['juso3']],
@@ -76,8 +76,6 @@ def jeju_analysis(request):
     spot_data.replace('', np.nan, inplace=True)
     spot_data.dropna(inplace=True)
     
-    # print(spot_data)
-    # print(uclid_process(jeju_facility_df,spot_data))
     result_data = uclid_process(jeju_facility_df,spot_data)
 
     #모델예측
@@ -87,11 +85,21 @@ def jeju_analysis(request):
     scaler = StandardScaler()
     X_scaled = scaler.fit_transform(X)
     
+    # pkl 파일 경로
+    pkl_file_path = "static/model/knn_model_6.h5"
+    import pickle
+    # pkl 파일 로드
+    with open(pkl_file_path, 'rb') as file:
+        model = pickle.load(file)
+    
     # 모델 로드
-    import joblib
-    model = joblib.load('static/model/MLP.pkl') 
+    # import joblib
+    # model = joblib.load('static/model/MLP.pkl') 
     # 예측 수행
     y_pred = model.predict(X_scaled)
-    print(y_pred)
-    return render(request,"analysis.html")
-
+    df_pred = pd.DataFrame({'예측값': y_pred})
+    # X 값과 예측된 y 값을 합치기
+    df_result = pd.concat([result_data['장소명'],X, df_pred], axis=1)
+    print(df_result)
+    
+    return render(request,"analysis.html",{'result':df_result.to_html()})

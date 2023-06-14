@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 
 from sklearn.preprocessing import StandardScaler
-    # 지도 보여주기  
+    # 지도 보여주기 
 def showmap(request):
     return render(request, "map.html")
 
@@ -15,7 +15,7 @@ def showmap(request):
 #  * @desc [description]
 def uclid_process(data_merge,spot_data):
     # 결과 데이터프레임 초기화
-    result_data = pd.DataFrame(columns=['장소명', '자전거도로', '정류장', '공원', '관광지','학교'])
+    result_data = pd.DataFrame(columns=['장소명', '자전거도로', '지하철역', '공원', '관광지','대학'])
     spot_data['위도'] = spot_data['위도'].astype(float)
     spot_data['경도'] = spot_data['경도'].astype(float)
     for spot_index, spot_row in spot_data.iterrows():
@@ -42,7 +42,7 @@ def uclid_process(data_merge,spot_data):
         # 결과 데이터프레임에 추가
         result_data = pd.concat([result_data, temp_result], ignore_index=True)
     return result_data
-        
+
 #  * @author jujuclubw
 #  * @email dlrkdwn428@gmail.com
 #  * @create date 2023-06-14 11:46:55
@@ -85,6 +85,13 @@ def jeju_analysis(request):
     scaler = StandardScaler()
     X_scaled = scaler.fit_transform(X)
     
+    # # pkl 파일 경로
+    # pkl_file_path = "static/model/knn_model_5.h5"
+    # import pickle
+    # pkl 파일 로드
+    # with open(pkl_file_path, 'rb') as file:
+    #     model = pickle.load(file)
+    
     # 모델 로드
     import joblib
     model = joblib.load('static/model/MLP.pkl') 
@@ -96,4 +103,3 @@ def jeju_analysis(request):
     print(df_result)
     
     return render(request,"analysis.html",{'result':df_result.to_html()})
-
