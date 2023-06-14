@@ -8,18 +8,14 @@
 <body>
     <div class="container" id="container">
         <div class="form-container sign-up-container">
-          <form method="post" action="{% url 'signup' %}">
+          <form method="post" action=".">
             {% csrf_token %}
             <h1>계정생성</h1>
             {% comment %} <input type="text" placeholder="Name" /> {% endcomment %}
-            <input type="text" placeholder="text" name="username" id="username"
-            value="{{ form.username.value|default_if_none:''}}" />
-            <input type="password" placeholder="Password" name="password" id="password" 
-            value="{{ form.password1.value|default_if_none:''}}"/>
-            <input type="password" placeholder="Password" name="password2" id="password2" 
-            value="{{ form.password2.value|default_if_none:''}}"/>
-            <input type="text" placeholder="E-mail" name="email" id="email" 
-            value="{{ form.email.value|default_if_none:''}}"/>
+            <input type="text" placeholder="text" name="username" id="username">
+            <input type="password" placeholder="Password" name="password" id="password">
+            <input type="password" placeholder="re_password" name="re_password" id="re_password">
+            <input type="text" placeholder="E-mail" name="email" id="email"/>
             <button type="submit" id="SignUp">Sign Up</button>
           </form>
         </div>
