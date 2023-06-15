@@ -27,7 +27,7 @@ def rental(request):
     )
     
     coords = sub
-    # marker cluster 객채를 생성
+    # marker cluster 객체를 생성
     marker_cluster = MarkerCluster().add_to(m)
    
     

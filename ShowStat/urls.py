@@ -10,5 +10,6 @@ from . import views
 
 urlpatterns = [
     path("", views.showstat),
-
+    # 서울 유동인구 시각화
+    path("movepeople/",views.MovePeople),
 ]
