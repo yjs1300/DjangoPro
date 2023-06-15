@@ -52,7 +52,158 @@
                             <a class="badge bg-secondary text-decoration-none link-light" href="#!">Freebies</a>
                         </header>
                         <!-- Preview image figure-->
-                        <figure class="mb-4"><img class="img-fluid rounded" src="..\static\images\ori.png" alt="..." /></figure>
+                        {% comment %} <figure class="mb-4"><img class="img-fluid rounded" src="..\static\images\ori.png" alt="..." /></figure> {% endcomment %}
+                        
+                        {% load bootstrap5 %}
+                    {% comment %} {% bootstrap_css %} {% endcomment %}
+                    {% bootstrap_javascript %} 
+
+                    {% comment %} {% block content%} {% endcomment %}
+                    {% comment %} 기본 chart.js 양식 {% endcomment %}
+                    <html>
+                    <span>
+                      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                    {% comment %} 연도별 공공자전거  {% endcomment %}
+                    </span>
+                    <body>
+                      <canvas id="myChart2" ></canvas>
+                      <p>차트를 보면 겨울에는 이용건수가 감소하였다가 여름에는 이용건수가 증가 하는 경향이 있다.
+                        또한 이용량건수가 늘어나는 것이 보여지며 20년 코로나 시국 이후에 더욱 증가 하는 경향이 있다.</p>
+                      <br></br>
+
+                      <canvas id="myChart3"></canvas>
+                      <p>차트를 보면 겨울에는 신규 가입건수가 감소하고 여름에는 신규 가입건수가 증가 하는 경향이 있다.
+                        이용건수가 꾸준하게 늘어나는 것과 누적 가입자수가 증가하는 것에 반비례하는 신규 가입자 수는 감소
+                        하는 경향이 있다.
+                      </p>
+                      <br></br>
+
+                      <canvas id="myChart4" ></canvas>
+                      <p>제주도 관광객 수는 코로나가 제일 심했던 2020년에 대폭 감소하였다가 이후 다시 회복하여 미세하지만 
+                        예전보다 많은 관광객 수를 볼수 있다.
+                      </p>
+                    <script>
+                    // 1번째 그래프
+                    var jsonData2 = {{chartdata2|safe}}
+
+                      // 데이터 추출함
+                    var labels2 = jsonData2.map(function(item) {
+                      return item.연월;
+                      });
+
+                      // 데이터 추출함
+                    var data2 = jsonData2.map(function(item) {
+                        return item.이용건수;
+                      });
+                          
+                    // 파이 차트를 그릴 캔버스 요소 선택
+                    var ctx2 = document.getElementById('myChart2').getContext('2d');
+
+                    // 차트 초기화
+                    var myChart2 = new Chart(ctx2, {
+                      type: 'line',
+                      data: {
+                        labels: labels2,
+                        datasets: [{
+                          label: '공공자전거 월별 이용건수(18~22년)',
+                          data: data2,
+                          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                          borderColor: 'rgba(75, 192, 192, 1)',
+                          borderWidth: 2
+                        }]
+                      },
+                          
+                      options: {    // 차트 옵션 설정
+                        aspectRatio: 3, // 가로 세로 비율을 1로 설정 (가로와 세로 크기가 동일하게 표시)
+                        y: {
+                            beginAtZero: true  // Y 축이 0부터 시작하도록 설정
+                                
+                          }
+                            
+                      }
+                    });
+
+                    // 2번째 그래프
+                    var jsonData3 = {{chartdata3|safe}}
+                    // 데이터 추출함
+                    var labels3 = jsonData3.map(function(item) {
+                        return item.연월;
+                        });
+                          
+                        // 데이터 추출함
+                      var data3 = jsonData3.map(function(item) {
+                          return item.가입자수;
+                        });
+                      // 파이 차트를 그릴 캔버스 요소 선택
+                      var ctx3 = document.getElementById('myChart3').getContext('2d');
+
+                    // 차트 초기화
+                    var myChart3 = new Chart(ctx3, {
+                        type: 'line',
+                        data: {
+                          labels: labels3,
+                          datasets: [{
+                            label: '공공자전거 월별 신규 가입자수(18~22년)',
+                            data: data3,
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 2
+                          }]
+                        },
+                            
+                        options: {    // 차트 옵션 설정
+                          aspectRatio: 3, // 가로 세로 비율을 1로 설정 (가로와 세로 크기가 동일하게 표시)
+                          y: {
+                              beginAtZero: true  // Y 축이 0부터 시작하도록 설정
+                                  
+                            }
+                              
+                        }
+                      });
+
+                      //3번째 그래프
+                      var jsonData4 = {{chartdata4|safe}}
+
+                      // 데이터 추출함
+                    var labels4 = jsonData4.map(function(item) {
+                      return item.연도월;
+                      });
+
+                      // 데이터 추출함
+                    var data4 = jsonData4.map(function(item) {
+                        return item.관광객수;
+                      });
+                    // 파이 차트를 그릴 캔버스 요소 선택
+                    var ctx4 = document.getElementById('myChart4').getContext('2d');
+
+                    // 파이 차트 초기화
+                    var myChart4 = new Chart(ctx4, {
+                      type: 'bar',
+                      data: {
+                        labels: labels4,
+                        datasets: [{
+                          label: '제주관광객수',
+                          data: data4,
+                          backgroundColor: 'rgba(135, 206, 250.2)',
+                          borderColor: 'rgba(135, 206, 250, 1)',
+                          borderWidth: 2
+                        }]
+                      },
+                      options: {    // 차트 옵션 설정
+                        aspectRatio: 3, // 가로 세로 비율을 1로 설정 (가로와 세로 크기가 동일하게 표시)
+                        y: {
+                            beginAtZero: true  // Y 축이 0부터 시작하도록 설정
+                                
+                          }
+                            
+                      }
+                    });
+
+                    </script>
+                    {% comment %} {% endblock%} {% endcomment %}
+                    </body>
+                    </html>
+
                         <!-- Post content-->
                         <section class="mb-5">
                             <p class="fs-5 mb-4">Science is an enterprise that should be cherished as an activity of the free human mind. Because it transforms who we are, how we live, and it gives us an understanding of our place in the universe.</p>
