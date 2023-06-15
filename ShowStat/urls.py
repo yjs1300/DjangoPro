@@ -10,5 +10,6 @@ from . import views
 
 urlpatterns = [
     path("", views.showstat),
-
+    path("chart/", views.rentalcount), # 06.15 지도 시각화 진행 
+    
 ]
