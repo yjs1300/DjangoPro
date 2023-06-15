@@ -38,8 +38,9 @@ def showstat(request):
     # return render(request,"statistic.html", context)
 
     
-    df = pd.read_csv('./rental3.csv',encoding="cp949")
-    df['대여소_ID'] = range(0, 3225)
+    df = pd.read_excel("./rental3.xlsx")
+    # df = pd.read_csv('./rental3.csv',encoding="cp949")
+    # df['대여소_ID'] = range(0, 3225)
     # df.set_index("시군구")
     # index_list = []
     # for index in range(0, 3224):
@@ -87,7 +88,7 @@ def showstat(request):
         geo_data= geo,
         name='choropleth',
         data=df, 
-        columns=['시군구코드','대여소_ID'], # 데이터프레임의 컬럼들
+        columns=['지역번호','대여소갯수'], # 데이터프레임의 컬럼들
         key_on='feature.properties.code', # geojson 피처의 키
         fill_color='YlGn',
         fill_opacity=0.7,
