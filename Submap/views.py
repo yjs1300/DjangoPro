@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 # Create your views here.
 # 현재 서울시 자전거 대여소 현황 출력
 def rental(request):
-    df = pd.read_csv('../rental.csv',encoding='cp949')
+    df = pd.read_csv('./rental.csv',encoding='cp949')
     sub = df[['위도','경도']]
     # print(sub)
     
@@ -27,7 +27,7 @@ def rental(request):
     )
     
     coords = sub
-    # marker cluster 객채를 생성
+    # marker cluster 객체를 생성
     marker_cluster = MarkerCluster().add_to(m)
    
     
@@ -38,9 +38,10 @@ def rental(request):
     # 템플릿에 보내기 위해서 사용함.
     maps = m._repr_html_()
     
+    
     # 제주도 자전거 데이터
     
-    df = pd.read_csv('../rentaljeju.csv', encoding='cp949')
+    df = pd.read_csv('./rentaljeju.csv', encoding='cp949')
     sub2 = df[['위도','경도']]
     # print(sub2)
     

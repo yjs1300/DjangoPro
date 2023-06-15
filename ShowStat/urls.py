@@ -6,9 +6,8 @@
     #  * @desc 통계 메인 url.py 생성
     #  */
 from django.urls import path
-from . import views
+from ShowStat import views
 
 urlpatterns = [
     path("", views.showstat),
-
 ]

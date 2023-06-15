@@ -35,10 +35,13 @@
                         {% else %}
                         <li class="nav-item"><a class="nav-link" href="login/">로그인</a></li>
                         {% endif %}
+                        
+                        {% if request.session.user%}
                         <li class="nav-item"><a class="nav-link" href="showchart/charts">분석</a></li>
                         <li class="nav-item"><a class="nav-link" href="statistics/">통계</a></li>
                         <li class="nav-item"><a class="nav-link" href="submap/submap">현황</a></li>
                         <li class="nav-item"><a class="nav-link" href="report/report">보고서</a></li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>
@@ -187,18 +190,18 @@
                     </div>
                     <div class="col-lg-4 col-sm-6">
                         <!-- Portfolio item 6-->
-                        <div class="portfolio-item">
+                        {% comment %} <div class="portfolio-item">
                             <a class="portfolio-link" data-bs-toggle="modal" href="#portfolioModal6">
                                 <div class="portfolio-hover">
                                     <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
                                 </div>
                                 <img class="img-fluid" src="{%static 'assets/img/portfolio/6.jpg'%}" alt="..." />
                             </a>
-                            <div class="portfolio-caption">
+                          <div class="portfolio-caption">
                                 <div class="portfolio-caption-heading">bootstarp</div>
                                 <div class="portfolio-caption-subheading text-muted">Front-end Design</div>
-                            </div>
-                        </div>
+                            </div> 
+                        </div> {% endcomment %}
                     </div>
                 </div>
             </div>
@@ -216,9 +219,9 @@
                         <div class="timeline-panel">
                             <div class="timeline-heading">
                                 <h4>주제 정하기</h4>
-                                <h4 class="subheading">Our Humble Beginnings</h4>
+                                <h4 class="subheading">Choosing a topic</h4>
                             </div>
-                            <div class="timeline-body"><p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt ut voluptatum eius sapiente, totam reiciendis temporibus qui quibusdam, recusandae sit vero unde, sed, incidunt et ea quo dolore laudantium consectetur!</p></div>
+                            <div class="timeline-body"><p class="text-muted">서울시에 공공자전거 대여소의 적합 위치를 모델로 학습하여 다른 지역에 적용시키는 아이디어를 채택했습니다. 대상이 되는 지역은 제주도로 지정, 서울시 따릉이에 관한 데이터를 모델로 학습시켜 제주도에 적용시켜보았습니다.</p></div>
                         </div>
                     </li>
                     <li class="timeline-inverted">
@@ -226,9 +229,9 @@
                         <div class="timeline-panel">
                             <div class="timeline-heading">
                                 <h4>데이터 수집 진행</h4>
-                                <h4 class="subheading">An Agency is Born</h4>
+                                <h4 class="subheading">Data Collection</h4>
                             </div>
-                            <div class="timeline-body"><p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt ut voluptatum eius sapiente, totam reiciendis temporibus qui quibusdam, recusandae sit vero unde, sed, incidunt et ea quo dolore laudantium consectetur!</p></div>
+                            <div class="timeline-body"><p class="text-muted">공공데이터 포탈 및 서울시 데이터 광장 등 검색을 통해 데이터를 수집하고 주변 시설과의 거리에 대한 대여소 이용건수의 변화를 확인하기 위한 데이터 가공 과정을 진행하였습니다.</p></div>
                         </div>
                     </li>
                     <li>
@@ -236,9 +239,9 @@
                         <div class="timeline-panel">
                             <div class="timeline-heading">
                                 <h4>화면 설계/구현 및 데이터 분석 진행</h4>
-                                <h4 class="subheading">Transition to Full Service</h4>
+                                <h4 class="subheading">Screen design/implementation and data analysis</h4>
                             </div>
-                            <div class="timeline-body"><p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt ut voluptatum eius sapiente, totam reiciendis temporibus qui quibusdam, recusandae sit vero unde, sed, incidunt et ea quo dolore laudantium consectetur!</p></div>
+                            <div class="timeline-body"><p class="text-muted">사용자가 버튼 클릭만으로 사용할 수 있도록 설계하였고, 전처리된 데이터로 여러종류의 모델을 선정하여 각자 모델 학습 결과를 도출하고 정확도를 비교했습니다.</p></div>
                         </div>
                     </li>
                     <li class="timeline-inverted">
@@ -246,9 +249,9 @@
                         <div class="timeline-panel">
                             <div class="timeline-heading">
                                 <h4>결과 및 발표 진행</h4>
-                                <h4 class="subheading">Phase Two Expansion</h4>
+                                <h4 class="subheading">Results and presentations</h4>
                             </div>
-                            <div class="timeline-body"><p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt ut voluptatum eius sapiente, totam reiciendis temporibus qui quibusdam, recusandae sit vero unde, sed, incidunt et ea quo dolore laudantium consectetur!</p></div>
+                            <div class="timeline-body"><p class="text-muted">제주도 지도를 보여주고 원하는 위치에 Marking(최대 3개) 지정하여 해당 위치가 따릉이 대여소를 증설하기 적합한지 등급을 나누고 분석결과를 시각화하였습니다.</p></div>
                         </div>
                     </li>
                     <li class="timeline-inverted">
@@ -265,6 +268,7 @@
                 </ul>
             </div>
         </section>
+
         <!-- Team-->
         <section class="page-section bg-light" id="team">
             <div class="container">
@@ -277,82 +281,65 @@
                         <div class="team-member">
                             <img class="mx-auto rounded-circle" src="{%static 'assets/img/team/박준규.jpg'%}" alt="..." />
                             <h4>박준규</h4>
-                            <p class="text-muted">Lead Designer</p>
-                            
+                            <p class="text-muted">팀장</p> 
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="team-member">
-                            <img class="mx-auto rounded-circle" src="{%static 'assets/img/team/2.jpg'%}" alt="..." />
+                            <img class="mx-auto rounded-circle" src="{%static 'assets/img/team/이강주.jpg'%}" alt="..." />
                             <h4>이강주</h4>
-                            <p class="text-muted">Lead Marketer</p>
+                            <p class="text-muted">부팀장</p>
                            
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="team-member">
-                            <img class="mx-auto rounded-circle" src="{%static 'assets/img/team/3.jpg'%}" alt="..." />
+                            <img class="mx-auto rounded-circle" src="{%static 'assets/img/team/김연근.png'%}" alt="..." />
                             <h4>김연근</h4>
-                            <p class="text-muted">Lead Developer</p>
-                           
+                            <p class="text-muted">팀원</p>                          
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="team-member">
                             <img class="mx-auto rounded-circle" src="{%static 'assets/img/team/유진.jpg'%}" alt="..." />
                             <h4>김유진</h4>
-                            <p class="text-muted">Lead Designer</p>
+                            <p class="text-muted">팀원</p>
                             
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="team-member">
-                            <img class="mx-auto rounded-circle" src="{%static 'assets/img/team/1.jpg'%}" alt="..." />
+                            <img class="mx-auto rounded-circle" src="{%static 'assets/img/team/박창휘.jpg'%}" alt="..." />
                             <h4>박창휘</h4>
-                            <p class="text-muted">Lead Designer</p>
-                           
+                            <p class="text-muted">팀원</p>                        
                         </div>
                     </div>
+
                     <div class="col-lg-4">
                         <div class="team-member">
-                            <img class="mx-auto rounded-circle" src="{%static 'assets/img/team/1.jpg'%}" alt="..." />
+                            <img class="mx-auto rounded-circle" src="{%static 'assets/img/team/윤지수.png'%}" alt="..." />
                             <h4>윤지수</h4>
-                            <p class="text-muted">Lead Designer</p>
-                            
+                            <p class="text-muted">팀원</p>
                         </div>
-                    </div>
+                    </div>  
+
                     <div class="col-lg-4">
                         <div class="team-member">
                             <img class="mx-auto rounded-circle" src="{%static 'assets/img/team/현재섭.jpg'%}" alt="..." />
                             <h4>현재섭</h4>
-                            <p class="text-muted">Lead Designer</p>
-                            
+                            <p class="text-muted">팀원</p>
+                        </div>
                     </div>
-                </div>
+                   
+
                 <div class="row">
                     <div class="col-lg-8 mx-auto text-center"><p class="large text-muted"></p></div>
                 </div>
             </div>
         </section>
+        
         <!-- Clients-->
-        <div class="py-5">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-md-3 col-sm-6 my-3">
-                        <a href="#!"><img class="img-fluid img-brand d-block mx-auto" src="{%static 'assets/img/logos/microsoft.svg'%}" alt="..." aria-label="Microsoft Logo" /></a>
-                    </div>
-                    <div class="col-md-3 col-sm-6 my-3">
-                        <a href="#!"><img class="img-fluid img-brand d-block mx-auto" src="{%static 'assets/img/logos/google.svg'%}" alt="..." aria-label="Google Logo" /></a>
-                    </div>
-                    <div class="col-md-3 col-sm-6 my-3">
-                        <a href="#!"><img class="img-fluid img-brand d-block mx-auto" src="{%static 'assets/img/logos/facebook.svg'%}" alt="..." aria-label="Facebook Logo" /></a>
-                    </div>
-                    <div class="col-md-3 col-sm-6 my-3">
-                        <a href="#!"><img class="img-fluid img-brand d-block mx-auto" src="{%static 'assets/img/logos/ibm.svg'%}" alt="..." aria-label="IBM Logo" /></a>
-                    </div>
-                </div>
-            </div>
-        </div>
+    
         <!-- Contact-->
 
         <!-- Footer-->

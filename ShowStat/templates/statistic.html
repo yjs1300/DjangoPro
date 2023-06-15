@@ -5,40 +5,50 @@
 @modify date 2023-06-13 11:10:07
 @desc 통계 페이지
 -->
-{% extends 'base.html' %}
+{% extends 'base.html'%}
 {% load static %}
-<!DOCTYPE html>{% comment %} start bootstrap 사용함. {% endcomment %}
+{% load bootstrap5 %}
+{% bootstrap_javascript %} 
+
+<!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>Blog Post - Start Bootstrap Template</title>
-        <!-- Favicon-->
-        {% block extra_style %}
-        <link rel="icon" type="image/x-icon"href="{% static 'assets/favicon.ico' %}"/>
-        <!-- Core theme CSS (includes Bootstrap)-->
-        <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
-        {% endblock %}
-    </head>
-    <body>
-        <!-- Responsive navbar-->
-        {% comment %} <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <div class="container">
-                <a class="navbar-brand" href="#!">Start Bootstrap</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                       <li class="nav-item"><a class="nav-link" href="/">Home</a></li> 
-                        <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#!">Contact</a></li>
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">Blog</a></li>
-                    </ul>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block title%}대여소 현황{% endblock %}
+    {% block extra_style %}
+     <link rel='stylesheet' type="text/css" href="{% static 'style.css' %}"/>   
+    {% endblock %}
+</head>
+<body>
+    {% block content %}
+        <div class="map-container"> <!-- 한 화면에 표시하기 위해 container css 새로 생성 -->
+            <div class="map-section">
+            <div class="map-title">서울시 대여소 현황</div>
+            <div class="map">
+            {% if maps1 %}
+                {{maps1 | safe}}                                                 
+            {% else %}
+                <div>자료가 넘어오지 않았습니다.</div>
+            {% endif%}
+            </div>
+        </div>
+           
+            {% comment %} folium 데이터를 받아올때 | safe를 사용해야 함{% endcomment %}
+            <div class="map-section">
+                <div class="map-title">서울시 유동인구 현황</div>
+                    <div class="map">
+                        {{maps2 | safe}}
+                    </div>
                 </div>
             </div>
-        </nav> {% endcomment %}
+        </nav> 
+     
         <!-- Page content-->
-        {% block content %}
+       
         <div class="container mt-5">
             <div class="row">
-                <div class="col-lg-8">
+                  <div class="col-lg-8">
                     <!-- Post content-->
                     <article>
                         <!-- Post header-->
@@ -46,22 +56,164 @@
                             <!-- Post title-->
                             <h1 class="fw-bolder mb-1">통계</h1>
                             <!-- Post meta content-->
-                            <div class="text-muted fst-italic mb-2">서울시 / 제주도</div>
+                            <div class="text-muted fst-italic mb-2">서울시</div>
                             <!-- Post categories-->
                             <a class="badge bg-secondary text-decoration-none link-light" href="#!">Web Design</a>
                             <a class="badge bg-secondary text-decoration-none link-light" href="#!">Freebies</a>
-                        </header>
-                        <!-- Preview image figure-->
-                        <figure class="mb-4"><img class="img-fluid rounded" src="..\static\images\ori.png" alt="..." /></figure>
+                        </header>                                  
+                    {% comment %} 기본 chart.js 양식 {% endcomment %}
+                    <html>
+                    <span>
+                      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                    {% comment %} 연도별 공공자전거  {% endcomment %}
+                    </span>
+                    <body>
+                      <canvas id="myChart2" ></canvas>
+                      <p>차트를 보면 겨울에는 이용건수가 감소하였다가 여름에는 이용건수가 증가 하는 경향이 있다.
+                        또한 이용량건수가 늘어나는 것이 보여지며 20년 코로나 시국 이후에 더욱 증가 하는 경향이 있다.</p>
+                      <br></br>
+
+                      <canvas id="myChart3"></canvas>
+                      <p>차트를 보면 겨울에는 신규 가입건수가 감소하고 여름에는 신규 가입건수가 증가 하는 경향이 있다.
+                        이용건수가 꾸준하게 늘어나는 것과 누적 가입자수가 증가하는 것에 반비례하는 신규 가입자 수는 감소
+                        하는 경향이 있다.
+                      </p>
+                      <br></br>
+
+                      <canvas id="myChart4" ></canvas>
+                      <p>제주도 관광객 수는 코로나가 제일 심했던 2020년에 대폭 감소하였다가 이후 다시 회복하여 미세하지만 
+                        예전보다 많은 관광객 수를 볼수 있다.
+                      </p>
+                    <script>
+                    // 1번째 그래프
+                    var jsonData2 = {{chartdata2|safe}}
+
+                      // 데이터 추출함
+                    var labels2 = jsonData2.map(function(item) {
+                      return item.연월;
+                      });
+
+                      // 데이터 추출함
+                    var data2 = jsonData2.map(function(item) {
+                        return item.이용건수;
+                      });
+                          
+                    // 파이 차트를 그릴 캔버스 요소 선택
+                    var ctx2 = document.getElementById('myChart2').getContext('2d');
+
+                    // 차트 초기화
+                    var myChart2 = new Chart(ctx2, {
+                      type: 'line',
+                      data: {
+                        labels: labels2,
+                        datasets: [{
+                          label: '공공자전거 월별 이용건수(18~22년)',
+                          data: data2,
+                          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                          borderColor: 'rgba(75, 192, 192, 1)',
+                          borderWidth: 2
+                        }]
+                      },
+                          
+                      options: {    // 차트 옵션 설정
+                        aspectRatio: 3, // 가로 세로 비율을 1로 설정 (가로와 세로 크기가 동일하게 표시)
+                        y: {
+                            beginAtZero: true  // Y 축이 0부터 시작하도록 설정
+                                
+                          }
+                            
+                      }
+                    });
+
+                    // 2번째 그래프
+                    var jsonData3 = {{chartdata3|safe}}
+                    // 데이터 추출함
+                    var labels3 = jsonData3.map(function(item) {
+                        return item.연월;
+                        });
+                          
+                        // 데이터 추출함
+                      var data3 = jsonData3.map(function(item) {
+                          return item.가입자수;
+                        });
+                      // 파이 차트를 그릴 캔버스 요소 선택
+                      var ctx3 = document.getElementById('myChart3').getContext('2d');
+
+                    // 차트 초기화
+                    var myChart3 = new Chart(ctx3, {
+                        type: 'line',
+                        data: {
+                          labels: labels3,
+                          datasets: [{
+                            label: '공공자전거 월별 신규 가입자수(18~22년)',
+                            data: data3,
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 2
+                          }]
+                        },
+                            
+                        options: {    // 차트 옵션 설정
+                          aspectRatio: 3, // 가로 세로 비율을 1로 설정 (가로와 세로 크기가 동일하게 표시)
+                          y: {
+                              beginAtZero: true  // Y 축이 0부터 시작하도록 설정
+                                  
+                            }
+                              
+                        }
+                      });
+
+                      //3번째 그래프
+                      var jsonData4 = {{chartdata4|safe}}
+
+                      // 데이터 추출함
+                    var labels4 = jsonData4.map(function(item) {
+                      return item.연도월;
+                      });
+
+                      // 데이터 추출함
+                    var data4 = jsonData4.map(function(item) {
+                        return item.관광객수;
+                      });
+                    // 파이 차트를 그릴 캔버스 요소 선택
+                    var ctx4 = document.getElementById('myChart4').getContext('2d');
+
+                    // 파이 차트 초기화
+                    var myChart4 = new Chart(ctx4, {
+                      type: 'bar',
+                      data: {
+                        labels: labels4,
+                        datasets: [{
+                          label: '제주관광객수',
+                          data: data4,
+                          backgroundColor: 'rgba(135, 206, 250.2)',
+                          borderColor: 'rgba(135, 206, 250, 1)',
+                          borderWidth: 2
+                        }]
+                      },
+                      options: {    // 차트 옵션 설정
+                        aspectRatio: 3, // 가로 세로 비율을 1로 설정 (가로와 세로 크기가 동일하게 표시)
+                        y: {
+                            beginAtZero: true  // Y 축이 0부터 시작하도록 설정
+                                
+                          }
+                            
+                      }
+                    });
+
+                    </script>
+                    {% comment %} {% endblock%} {% endcomment %}
+                    </body>
+                    </html>
+
                         <!-- Post content-->
                         <section class="mb-5">
                             <p class="fs-5 mb-4">Science is an enterprise that should be cherished as an activity of the free human mind. Because it transforms who we are, how we live, and it gives us an understanding of our place in the universe.</p>
                         </section>
-                    </article>
+                </article> 
                  
                 </div>
-              
-      
+                   
         {% endblock %}
     </body>
 </html>
