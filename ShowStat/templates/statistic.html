@@ -7,6 +7,8 @@
 -->
 {% extends 'base.html'%}
 {% load static %}
+{% load bootstrap5 %}
+{% bootstrap_javascript %} 
 
 <!DOCTYPE html>
 <html lang="en">
@@ -40,13 +42,13 @@
                     </div>
                 </div>
             </div>
-<<<<<<< HEAD
-        </nav> {% endcomment %}
+        </nav> 
+     
         <!-- Page content-->
-        {% block content %}
+       
         <div class="container mt-5">
             <div class="row">
-                <div class="col-lg-8">
+                  <div class="col-lg-8">
                     <!-- Post content-->
                     <article>
                         <!-- Post header-->
@@ -54,19 +56,11 @@
                             <!-- Post title-->
                             <h1 class="fw-bolder mb-1">통계</h1>
                             <!-- Post meta content-->
-                            <div class="text-muted fst-italic mb-2">서울시 / 제주도</div>
+                            <div class="text-muted fst-italic mb-2">서울시</div>
                             <!-- Post categories-->
                             <a class="badge bg-secondary text-decoration-none link-light" href="#!">Web Design</a>
                             <a class="badge bg-secondary text-decoration-none link-light" href="#!">Freebies</a>
-                        </header>
-                        <!-- Preview image figure-->
-                        {% comment %} <figure class="mb-4"><img class="img-fluid rounded" src="..\static\images\ori.png" alt="..." /></figure> {% endcomment %}
-                        
-                        {% load bootstrap5 %}
-                    {% comment %} {% bootstrap_css %} {% endcomment %}
-                    {% bootstrap_javascript %} 
-
-                    {% comment %} {% block content%} {% endcomment %}
+                        </header>                                  
                     {% comment %} 기본 chart.js 양식 {% endcomment %}
                     <html>
                     <span>
@@ -216,17 +210,10 @@
                         <section class="mb-5">
                             <p class="fs-5 mb-4">Science is an enterprise that should be cherished as an activity of the free human mind. Because it transforms who we are, how we live, and it gives us an understanding of our place in the universe.</p>
                         </section>
-                    </article>
+                </article> 
                  
                 </div>
-              
-      
+                   
         {% endblock %}
     </body>
 </html>
-=======
-        
-    {% endblock %}
-</body>
-</html>
->>>>>>> dev

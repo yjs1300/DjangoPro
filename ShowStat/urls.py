@@ -10,14 +10,4 @@ from ShowStat import views
 
 urlpatterns = [
     path("", views.showstat),
-<<<<<<< HEAD
-
-    
-
-=======
-    # path("chart/", views.rentalcount), # 06.15 지도 시각화 진행 
-    
-    # 서울시 지역구별 유동인구 시각화
-    # path("movepeople/",views.MovePeople),
->>>>>>> dev
 ]
