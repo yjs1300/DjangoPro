@@ -2,7 +2,7 @@ from django.shortcuts import redirect, HttpResponse, HttpResponseRedirect, rende
 from django.http import JsonResponse
 import json
 import folium
-from folium.plugins import MarkerCluster
+from folium.plugins import MarkerCluster,FastMarkerCluster
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 # Create your views here.
 # 현재 서울시 자전거 대여소 현황 출력
 def rental(request):
-    df = pd.read_csv('../rental.csv',encoding='cp949')
+    df = pd.read_csv('./rental.csv',encoding='cp949')
     sub = df[['위도','경도']]
     # print(sub)
     
@@ -27,8 +27,9 @@ def rental(request):
     )
     
     coords = sub
-    # marker cluster 객채를 생성
+    # marker cluster 객체를 생성
     marker_cluster = MarkerCluster().add_to(m)
+   
     
     # 데이터의 위도, 경도를 받아서 마커를 생성함.
     for lat, long in zip(coords['위도'], coords['경도']):
@@ -37,9 +38,10 @@ def rental(request):
     # 템플릿에 보내기 위해서 사용함.
     maps = m._repr_html_()
     
+    
     # 제주도 자전거 데이터
     
-    df = pd.read_csv('../rentaljeju.csv', encoding='cp949')
+    df = pd.read_csv('./rentaljeju.csv', encoding='cp949')
     sub2 = df[['위도','경도']]
     # print(sub2)
     
@@ -69,7 +71,7 @@ def rental(request):
     return render(request,'submap.html',{'map':maps,'map2':map2})
 
 
-
+# chart.js
 def chart(request):
     
     # 데이터프레임을 JSon으로 변환

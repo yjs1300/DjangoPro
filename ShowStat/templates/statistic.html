@@ -5,34 +5,42 @@
 @modify date 2023-06-13 11:10:07
 @desc 통계 페이지
 -->
-{% extends 'base.html' %}
+{% extends 'base.html'%}
 {% load static %}
-<!DOCTYPE html>{% comment %} start bootstrap 사용함. {% endcomment %}
+
+<!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>Blog Post - Start Bootstrap Template</title>
-        <!-- Favicon-->
-        {% block extra_style %}
-        <link rel="icon" type="image/x-icon"href="{% static 'assets/favicon.ico' %}"/>
-        <!-- Core theme CSS (includes Bootstrap)-->
-        <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
-        {% endblock %}
-    </head>
-    <body>
-        <!-- Responsive navbar-->
-        {% comment %} <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <div class="container">
-                <a class="navbar-brand" href="#!">Start Bootstrap</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                       <li class="nav-item"><a class="nav-link" href="/">Home</a></li> 
-                        <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#!">Contact</a></li>
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">Blog</a></li>
-                    </ul>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block title%}대여소 현황{% endblock %}
+    {% block extra_style %}
+     <link rel='stylesheet' type="text/css" href="{% static 'style.css' %}"/>   
+    {% endblock %}
+</head>
+<body>
+    {% block content %}
+        <div class="map-container"> <!-- 한 화면에 표시하기 위해 container css 새로 생성 -->
+            <div class="map-section">
+            <div class="map-title">서울시 대여소 현황</div>
+            <div class="map">
+            {% if maps1 %}
+                {{maps1 | safe}}                                                 
+            {% else %}
+                <div>자료가 넘어오지 않았습니다.</div>
+            {% endif%}
+            </div>
+        </div>
+           
+            {% comment %} folium 데이터를 받아올때 | safe를 사용해야 함{% endcomment %}
+            <div class="map-section">
+                <div class="map-title">서울시 유동인구 현황</div>
+                    <div class="map">
+                        {{maps2 | safe}}
+                    </div>
                 </div>
             </div>
+<<<<<<< HEAD
         </nav> {% endcomment %}
         <!-- Page content-->
         {% block content %}
@@ -216,3 +224,9 @@
         {% endblock %}
     </body>
 </html>
+=======
+        
+    {% endblock %}
+</body>
+</html>
+>>>>>>> dev
