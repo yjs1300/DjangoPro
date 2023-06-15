@@ -10,7 +10,10 @@ import matplotlib.pyplot as plt
 # Create your views here.
 # 현재 서울시 자전거 대여소 현황 출력
 def rental(request):
+    
     df = pd.read_csv('./rental.csv',encoding='cp949')
+    df1 = df[(df['위도'] != 0) & (df['경도'] != 0)]
+    df = df1.reset_index(drop=True)
     sub = df[['위도','경도']]
     # print(sub)
     
