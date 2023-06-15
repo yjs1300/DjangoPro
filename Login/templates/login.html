@@ -18,14 +18,12 @@
   <div class="form-container sign-up-container">
     <form method="post" action="signup/" name="signup">
       {% csrf_token %}
-      <h1>Create Account</h1>
-      <div class="social-container">
-       </div>
+      <h1> 회원가입 </h1>
       <input type="text" placeholder="Id" id="account" name="account"/>
       <input type="email" placeholder="Email" id="email" name="email" />
       <input type="password" placeholder="Password" id="password" name="password"/>
       <input type="text" placeholder="Name" id="username" name="username"/>
-      <button type="submit">Sign Up</button>
+      <button type="submit">가입하기</button>
     </form>
   </div>
 
@@ -34,11 +32,10 @@
     <form method="post" action="/login/" name="login">
       {% csrf_token %}
       <h1>로그인</h1>
-      <div class="social-container"></div>
       <input type="text" placeholder="Id" id="account" name="account"/>
       <input type="password" placeholder="Password" id="password" name="password"/>
-      <a href="/">Forgot your password?</a>
-      <button>Sign In</button>
+     
+      <button>로그인</button>
     </form>
   </div>
 
@@ -46,14 +43,14 @@
   <div class="overlay-container">
     <div class="overlay">
       <div class="overlay-panel overlay-left">
-        <h1>Welcome Back!</h1>
-        <p>To keep connected with us please login with your personal info</p>
-        <button class="ghost" id="signIn">Sign In</button>
+        <h1>어서오세요</h1>
+        <p>로그인을 진행해주세요</p>
+        <button class="ghost" id="signIn">로그인</button>
       </div>
       <div class="overlay-panel overlay-right">
-        <h1>Hello, Friend!</h1>
-        <p>Enter your personal details and start journey with us</p>
-        <button class="ghost" id="signUp">Sign Up</button>
+        <h1>반가워요!</h1>
+        <p>정보를 입력해주세요!</p>
+        <button class="ghost" id="signUp">회원가입</button>
       </div>
     </div>
   </div>
