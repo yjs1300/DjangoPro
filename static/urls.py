@@ -3,5 +3,5 @@ from . import views
 
 urlpatterns = [
     path("map/", views.showmap),
-    path("analysis",views.jeju_analysis)
+    path("analysis",views.jeju_analysis),
 ]

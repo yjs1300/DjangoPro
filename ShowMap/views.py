@@ -2,8 +2,9 @@ from django.shortcuts import render
 from .models import JejuFacility
 import pandas as pd
 import numpy as np
-
-from sklearn.preprocessing import StandardScaler
+from django.http import HttpResponse
+import math
+import json 
     # 지도 보여주기 
 def showmap(request):
     return render(request, "map.html")
@@ -12,7 +13,7 @@ def showmap(request):
 #  * @email dlrkdwn428@gmail.com
 #  * @create date 2023-06-14 14:01:59
 #  * @modify date 2023-06-14 14:01:59
-#  * @desc [description]
+#  * @desc [유클리디안 거리계산]
 def uclid_process(data_merge,spot_data):
     # 결과 데이터프레임 초기화
     result_data = pd.DataFrame(columns=['장소명', '자전거도로', '지하철역', '공원', '관광지','대학'])
@@ -32,16 +33,32 @@ def uclid_process(data_merge,spot_data):
         temp_result['최단거리'] = np.sqrt(
             np.power(temp_result['경도'] - spot_longitude, 2) +
             np.power(temp_result['위도'] - spot_latitude, 2)
-
         )
 
         # 주제별 최단거리를 구하기 위해 그룹화하여 최소값 선택
         temp_result = temp_result.groupby(['장소명', '주제'])['최단거리'].min().reset_index()
         temp_result = temp_result.pivot(index='장소명', columns='주제', values='최단거리').reset_index()
-
+ 
         # 결과 데이터프레임에 추가
         result_data = pd.concat([result_data, temp_result], ignore_index=True)
+        result_data['자전거도로']=result_data['자전거도로']*1.05
+        result_data['지하철역']=result_data['지하철역']*0.85
+        result_data['공원']=result_data['공원']*0.65
+        result_data['관광지']=result_data['관광지']*0.7
+        result_data['대학']=result_data['대학']*0.70
+        result_data['총이동']=0
     return result_data
+
+#  * @author jujuclubw
+#  * @email dlrkdwn428@gmail.com
+#  * @create date 2023-06-15 16:22:07
+#  * @modify date 2023-06-15 16:22:07
+#  * @desc [위경도 차이값 미터 변환함수]
+def convert(latitude_diff, longitude_diff):
+    latitude_meters = latitude_diff * 111111
+    longitude_meters = longitude_diff * (math.cos(math.radians(latitude_diff)) * 111111)
+    distance_in_meters = math.sqrt(latitude_meters**2 + longitude_meters**2)
+    return round(distance_in_meters, 2)
 
 #  * @author jujuclubw
 #  * @email dlrkdwn428@gmail.com
@@ -49,57 +66,80 @@ def uclid_process(data_merge,spot_data):
 #  * @modify date 2023-06-14 11:46:55
 #  * @desc [제주 시설 검색]
 def jeju_analysis(request):
-    
-    jeju_facility = list(JejuFacility.objects.all())
-    
-    #최단 검색용 제주 시설 df
-    f_datas = []
-    for j in jeju_facility:
-        dic = {
-            '장소명':j.j_name,
-            '위도':j.j_latitude,
-            '경도':j.j_longitude,
-            '주제':j.j_theme,
-            }
-        f_datas.append(dic)
+    if request.method == 'POST':
+        jeju_facility = list(JejuFacility.objects.all())
         
-    jeju_facility_df = pd.DataFrame(f_datas)
-    # jeju_facility_df = jeju_facility_df[(jeju_facility_df['경도'] >= -180) & (jeju_facility_df['경도'] <= 180)]
-    # print(jeju_facility_df)
-    #선택한 제주 위경도
-    ping = {
-        '장소명':[request.POST['juso1'],request.POST['juso2'],request.POST['juso3']],
-        '위도':[request.POST['lat1'],request.POST['lat2'],request.POST['lat3']],
-        '경도':[request.POST['lng1'],request.POST['lng2'],request.POST['lng3']],
-    }
-    spot_data = pd.DataFrame(ping)
-    spot_data.replace('', np.nan, inplace=True)
-    spot_data.dropna(inplace=True)
-    
-    result_data = uclid_process(jeju_facility_df,spot_data)
+        #최단 검색용 제주 시설 df
+        f_datas = []
+        for j in jeju_facility:
+            dic = {
+                '장소명':j.j_name,
+                '위도':j.j_latitude,
+                '경도':j.j_longitude,
+                '주제':j.j_theme,
+                }
+            f_datas.append(dic)
+        jeju_facility_df = pd.DataFrame(f_datas)
+        
+        #선택한 제주 위경도
+        ping = {
+            '장소명':[request.POST['juso1'],request.POST['juso2'],request.POST['juso3']],
+            '위도':[request.POST['lat1'],request.POST['lat2'],request.POST['lat3']],
+            '경도':[request.POST['lng1'],request.POST['lng2'],request.POST['lng3']],
+        }
+        spot_data = pd.DataFrame(ping)
+        spot_data.replace('', np.nan, inplace=True)
+        spot_data.dropna(inplace=True)
+        
+        result_data = uclid_process(jeju_facility_df,spot_data)
+        # 컬럼에 함수 적용하여 결과 저장
 
-    #모델예측
-    # '장소명' 컬럼을 제외한 값 선택
-    X = result_data.drop(columns=['장소명'])
-    # 데이터 표준화
-    scaler = StandardScaler()
-    X_scaled = scaler.fit_transform(X)
+
+        #모델예측
+        # '장소명' 컬럼을 제외한 값 선택
+        X = result_data.drop(columns=['장소명'])
+        # 데이터 표준화
+        # scaler = StandardScaler()
+        # X_scaled = scaler.fit_transform(X)
+        # pkl 파일 경로
+        pkl_file_path = "static/model/knn_model_6_stdX.h5"
+        import pickle
+        # pkl 파일 로드
+        with open(pkl_file_path, 'rb') as file:
+            model = pickle.load(file)
+        
+        # # 모델 로드
+        # import joblib
+        # model = joblib.load('static/model/MLP.pkl') 
+        # 예측 수행
+        y_pred = model.predict(X)
+        df_pred = pd.DataFrame({'예측값': y_pred})
+        
+        df_result = pd.concat([result_data['장소명'],X, df_pred], axis=1)
+        # 출력전 위경도 간 데이터 미터로 변환
+        df_result['자전거도로'] = result_data.apply(lambda row: convert(row['자전거도로'], row['자전거도로']), axis=1)
+        df_result['지하철역'] = result_data.apply(lambda row: convert(row['지하철역'], row['지하철역']), axis=1)
+        df_result['공원'] = result_data.apply(lambda row: convert(row['공원'], row['공원']), axis=1)
+        df_result['관광지'] = result_data.apply(lambda row: convert(row['관광지'], row['관광지']), axis=1)
+        df_result['대학'] = result_data.apply(lambda row: convert(row['대학'], row['대학']), axis=1)
+        
+        return render(request,"mainresult.html",{'result':df_result})
     
-    # # pkl 파일 경로
-    # pkl_file_path = "static/model/knn_model_5.h5"
-    # import pickle
-    # pkl 파일 로드
-    # with open(pkl_file_path, 'rb') as file:
-    #     model = pickle.load(file)
-    
-    # 모델 로드
-    import joblib
-    model = joblib.load('static/model/MLP.pkl') 
-    # 예측 수행
-    y_pred = model.predict(X_scaled)
-    df_pred = pd.DataFrame({'예측값': y_pred})
-    # X 값과 예측된 y 값을 합치기
-    df_result = pd.concat([result_data['장소명'],X, df_pred], axis=1)
-    print(df_result)
-    
-    return render(request,"analysis.html",{'result':df_result.to_html()})
+    if request.method == 'GET':
+        #  * @author jujuclubw
+        #  * @email dlrkdwn428@gmail.com
+        #  * @create date 2023-06-15 11:28:17
+        #  * @modify date 2023-06-15 11:28:17
+        #  * @desc [차트출력]
+        dic = {
+            'place':request.GET['place'],
+            'cycle':request.GET['cycle'],
+            'train':request.GET['train'],
+            'park':request.GET['park'],
+            'tour':request.GET['tour'],
+            'school':request.GET['school'],
+            'pop':request.GET['pop']}
+        print(dic)
+        return HttpResponse(json.dumps(dic), content_type="application/json")
+        
+        
