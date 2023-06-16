@@ -16,3 +16,11 @@ class JejuFacility(models.Model):
     class Meta:
         managed = False
         db_table = 'jeju_facility'
+        
+class JejuPop(models.Model):
+    j_gu = models.CharField(max_length=10, blank=True, null=True)
+    j_pop = models.FloatField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'jeju_pop'
