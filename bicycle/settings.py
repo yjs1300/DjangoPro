@@ -147,4 +147,11 @@ STATIC_ROOT = os.path.join(BASE_DIR,'static')
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+#Django Session Timeout Code
 
+# 10분 지나면 자동 로그아웃
+SESSION_COOKIE_AGE = 600
+SESSION_SAVE_EVERY_REQUEST = True
+
+# 브라우저 창을 닫으면 자동 로그아웃을 진행함.
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True

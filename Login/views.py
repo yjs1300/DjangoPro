@@ -3,7 +3,6 @@
 # from django.shortcuts import redirect
 # from Login.forms import UserForm
 from django.shortcuts import render,redirect
-from django.contrib.sessions.models import Session
 from . models import Member
 
 
@@ -56,7 +55,8 @@ def signup(request):
 
 # 로그아웃
 def logout(request):
-    del(request.session['user'])
+    if request.session.get('user'):
+        del(request.session['user'])
     return redirect("/")
 
 
