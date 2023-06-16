@@ -57,10 +57,11 @@
   </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="{% static 'js/account.js' %}">
+<script src="{% static 'js/account.js' %}"></script>
+<script src="text/javascript">
     // 로그인 폼 제출에 대한 이벤트 핸들러 
  $(document).ready(function(){
-    $("signup").submit(function(e){
+    $("form[name=signup]").submit(function(e){
       event.preventDefault(); // form 제출기능 비활성화
 
       // 폼 데이터 가져오기
@@ -82,7 +83,7 @@
       });
     });
 /* ---------------------------------------------------------------------------------*/
-    $('#login').submit(function(){
+    $("form[name=login]").submit(function(){
       event.preventDefault(); // 원래의 로그인 submit 기능 방지함
       
       var formData = $(this).serialize(); // 기존의 form 데이터 가져오기
