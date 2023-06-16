@@ -10,13 +10,14 @@
     <title>로그인 화면</title>
     {% comment %} CSS연동 {% endcomment %}
     <link rel='stylesheet' type="text/css" href="{% static 'css/login.css' %}"/>
+   
 </head>
 <body>
 
 {% comment %} 회원가입 {% endcomment %}
 <div class="container" id="container">
   <div class="form-container sign-up-container">
-    <form method="post" action="signup/" name="signup">
+    <form method="post" action="signup/" name="signup" id="signup">
       {% csrf_token %}
       <h1> 회원가입 </h1>
       <input type="text" placeholder="Id" id="account" name="account"/>
@@ -29,7 +30,7 @@
 
   {% comment %} 로그인 {% endcomment %}
   <div class="form-container sign-in-container">
-    <form method="post" action="/login/" name="login">
+    <form method="post" action="/login/" name="login" id='login'>
       {% csrf_token %}
       <h1>로그인</h1>
       <input type="text" placeholder="Id" id="account" name="account"/>
@@ -55,6 +56,65 @@
     </div>
   </div>
 </div>
-<script src="{% static 'js/account.js' %}"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{% static 'js/account.js' %}">
+    // 로그인 폼 제출에 대한 이벤트 핸들러 
+ $(document).ready(function(){
+    $("signup").submit(function(e){
+      event.preventDefault(); // form 제출기능 비활성화
+
+      // 폼 데이터 가져오기
+      var formData = $(this).serialize();
+
+      // AJAX 요청 보내기
+      $.ajax({
+        type: 'POST'
+        url:'/singup/'
+        data:formData
+        success: function(response){
+          // 성공하였을때 실행되는 코드이다.
+          console.log(response);
+        },
+        error: function(xhr, errmsg, err){
+          // 오류를 처리할 코드 
+          console.log(xhr.status + ": " + xhr.responseText);
+        }
+      });
+    });
+/* ---------------------------------------------------------------------------------*/
+    $('#login').submit(function(){
+      event.preventDefault(); // 원래의 로그인 submit 기능 방지함
+      
+      var formData = $(this).serialize(); // 기존의 form 데이터 가져오기
+      
+        // AJAX 요청 보내기
+        $.ajax({
+        type: 'POST'
+        url:'/login'
+        data:formData
+        success: function(response){
+          // 성공하였을때 실행되는 코드이다.
+          console.log(response);
+        },
+        error: function(xhr, errmsg, err){
+          // 오류를 처리할 코드 
+          console.log(xhr.status + ": " + xhr.responseText);
+        }
+
+      });
+    });
+
+      // 회원가입과 로그인 폼 사이의 전환 기능
+      $('#signIn').click(function() {
+      $('#container').removeClass("right-panel-active");
+    });
+
+    $('#signUp').click(function() {
+      $('#container').addClass("right-panel-active");
+    });
+
+    });
+
+</script>
 </body>
 </html>
