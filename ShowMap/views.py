@@ -1,5 +1,6 @@
 from django.shortcuts import render
-from .models import JejuFacility
+import pickle
+from .models import JejuFacility, JejuPop
 import pandas as pd
 import numpy as np
 from django.http import HttpResponse
@@ -9,6 +10,8 @@ import json
 def showmap(request):
     return render(request, "map.html")
 
+
+#=================================================================
 #  * @author jujuclubw
 #  * @email dlrkdwn428@gmail.com
 #  * @create date 2023-06-14 14:01:59
@@ -17,8 +20,10 @@ def showmap(request):
 def uclid_process(data_merge,spot_data):
     # 결과 데이터프레임 초기화
     result_data = pd.DataFrame(columns=['장소명', '자전거도로', '지하철역', '공원', '관광지','대학'])
+    
     spot_data['위도'] = spot_data['위도'].astype(float)
     spot_data['경도'] = spot_data['경도'].astype(float)
+
     for spot_index, spot_row in spot_data.iterrows():
         spot_name = spot_row['장소명']
         spot_longitude = spot_row['경도']
@@ -28,6 +33,15 @@ def uclid_process(data_merge,spot_data):
         temp_result = data_merge.copy()
         temp_result['최단거리'] = 0.0
         temp_result['장소명'] = spot_name
+        #temp_result['총이동']=0
+
+        #구 유동인구
+        # imsi=0
+        # for p in jeju_pop:
+        #     if p.j_gu == spot_data.loc[spot_index,'장소명']:
+        #         imsi=p.j_pop
+        #         break
+        # print('imsi2',imsi)
 
         # 유클리드 거리 계산
         temp_result['최단거리'] = np.sqrt(
@@ -38,15 +52,21 @@ def uclid_process(data_merge,spot_data):
         # 주제별 최단거리를 구하기 위해 그룹화하여 최소값 선택
         temp_result = temp_result.groupby(['장소명', '주제'])['최단거리'].min().reset_index()
         temp_result = temp_result.pivot(index='장소명', columns='주제', values='최단거리').reset_index()
- 
+
         # 결과 데이터프레임에 추가
         result_data = pd.concat([result_data, temp_result], ignore_index=True)
-        result_data['자전거도로']=result_data['자전거도로']*1.05
-        result_data['지하철역']=result_data['지하철역']*0.85
-        result_data['공원']=result_data['공원']*0.65
-        result_data['관광지']=result_data['관광지']*0.7
-        result_data['대학']=result_data['대학']*0.70
-        result_data['총이동']=0
+        
+    #  * @author jisu youn
+    #  * @email yjs60130@gmail.com
+    #  * @create date 2023-06-16 09:42:16
+    #  * @modify date 2023-06-16 09:42:16
+    #  * @desc 거리 조정
+    result_data['자전거도로']=result_data['자전거도로']*1.15
+    result_data['지하철역']=result_data['지하철역']*0.7
+    result_data['공원']=result_data['공원']*0.5
+    result_data['관광지']=result_data['관광지']*0.5
+    result_data['대학']=result_data['대학']*0.34    
+    
     return result_data
 
 #  * @author jujuclubw
@@ -102,7 +122,8 @@ def jeju_analysis(request):
         # scaler = StandardScaler()
         # X_scaled = scaler.fit_transform(X)
         # pkl 파일 경로
-        pkl_file_path = "static/model/knn_model_6_stdX.h5"
+        #pkl_file_path = "static/model/knn_model_5_stdX.h5"
+        pkl_file_path = "C://Users//yjs60//Documents//GitHub//team1_main//ShowMap//static//model//knn_model_5_stdX.h5"
         import pickle
         # pkl 파일 로드
         with open(pkl_file_path, 'rb') as file:
@@ -114,6 +135,7 @@ def jeju_analysis(request):
         # 예측 수행
         y_pred = model.predict(X)
         df_pred = pd.DataFrame({'예측값': y_pred})
+
         
         df_result = pd.concat([result_data['장소명'],X, df_pred], axis=1)
         # 출력전 위경도 간 데이터 미터로 변환
@@ -141,5 +163,3 @@ def jeju_analysis(request):
             'pop':request.GET['pop']}
         print(dic)
         return HttpResponse(json.dumps(dic), content_type="application/json")
-        
-        
