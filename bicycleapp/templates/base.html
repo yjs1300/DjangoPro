@@ -56,7 +56,6 @@
   <div class="sidenav">
     <a href="/">Home</a>
     <a href="#">Top</a>
-    <a id="분석" href="/showchart/charts">분석</a>
     <a id="현황" href="/submap/showmap">현황</a>
     <a id="통계" href="/statistics/">통계</a>
     <a id="report" href="/report/report">보고서</a>
@@ -75,16 +74,16 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" id='분석' href="/showchart/charts">분석</a>
+            <a class="nav-link" id='분석' href="#">분석</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" id='통계' href="/statistics">통계</a>
+            <a class="nav-link" id='통계' href="#">통계</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" id='현황' href="/submap/submap">현황</a>
+            <a class="nav-link" id='현황' href="#">현황</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" id=report href=".">보고서</a>
+            <a class="nav-link" id='report' href="javascript:aa()">보고서</a>
           </li>
         </ul>
       </div>
@@ -101,25 +100,33 @@
   <script type="text/javascript">
     // 네브바 이동 기능 구현
     $(document).ready(function(){
+       
       $('#report').click(function(event){
         event.preventDefault();
         location.href = '/report/report'
       });
-      $('#분석').click(function(event){ // 임시로 링크 걸어놈
+
+      $('a#분석').click(function(event){ // 임시로 링크 걸어놈
         event.preventDefault();
-        location.href = '/showchart/charts'
-      });
-      $('#통계').click(function(event){
-        event.preventDefault();
-        document.location.href = '/statistics'
+        location.href ='/showchart/charts'
       });
 
-      $('#현황').click(function(event){
+      $('a#통계').click(function(event){
+        event.preventDefault();
+        document.location.href ='/statistics'
+      });
+
+      $('a#현황').click(function(event){
         event.preventDefault();
         location.href = '/submap/submap'
       
       });
     });
+
+    function aa(){
+      location.href = '/report/report';
+    }
+
     var sidebarWidth = document.querySelector('.sidenav').offsetWidth;
     document.querySelector('.main').style.marginLeft = sidebarWidth + 'px';
        

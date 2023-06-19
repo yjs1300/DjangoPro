@@ -2,7 +2,7 @@
     display: flex;
     justify-content: space-around; /* 자식 요소들 사이에 공간을 균등하게 배분 */
     align-items: center; /* 수직 정렬 */
-    height: 100vh; /* 높이를 브라우저 뷰포트의 높이로 설정 */
+   /* height: 40vh;  높이를 브라우저 뷰포트의 높이로 설정 */
 }
 .map-section {
     width: 45%;  /* 조절 가능한 너비 */

@@ -5,7 +5,8 @@ import pandas as pd
 import numpy as np
 from django.http import HttpResponse
 import math
-import json 
+import json
+import os
     # 지도 보여주기 
 def showmap(request):
     return render(request, "map.html")
@@ -123,7 +124,8 @@ def jeju_analysis(request):
         # X_scaled = scaler.fit_transform(X)
         # pkl 파일 경로
         #pkl_file_path = "static/model/knn_model_5_stdX.h5"
-        pkl_file_path = "ShowMap/static/model/knn_model_5_stdX.h5 "
+        # print(os.getcwd())
+        pkl_file_path = "ShowMap/static/model/knn_model_5_stdX.h5"
         import pickle
         # pkl 파일 로드
         with open(pkl_file_path, 'rb') as file:
