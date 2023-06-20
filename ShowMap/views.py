@@ -101,7 +101,7 @@ def jeju_analysis(request):
                 }
             f_datas.append(dic)
         jeju_facility_df = pd.DataFrame(f_datas)
-        
+
         #선택한 제주 위경도
         ping = {
             '장소명':[request.POST['juso1'],request.POST['juso2'],request.POST['juso3']],
@@ -147,22 +147,26 @@ def jeju_analysis(request):
         df_result['관광지'] = result_data.apply(lambda row: convert(row['관광지'], row['관광지']), axis=1)
         df_result['대학'] = result_data.apply(lambda row: convert(row['대학'], row['대학']), axis=1)
         
-        print('공원',convert(0.03433583,0.03433583),'관광지',convert(0.07511377,0.07511377),'대학',convert(0.08019374,0.08019374))
+        #print('공원',convert(0.03433583,0.03433583),'관광지',convert(0.07511377,0.07511377),'대학',convert(0.08019374,0.08019374))
         #공원 5395.35 관광지 11802.97 대학 12601.21
         
         df_result['자전거도로']=100-(df_result['자전거도로']/13400*100)
         df_result['지하철역']=100-(df_result['지하철역']/7500*100)
         df_result['공원']=100-(df_result['공원']/6000*100)
-        df_result['관광지']=100-(df_result['관광지']/10000*100)
+        df_result['관광지']=100-(df_result['관광지']/10500*100)
         df_result['대학']=100-(df_result['대학']/12000*100) 
         
-        df_result.loc[df_result['자전거도로'] < 0, '자전거도로'] = 0
+        df_result.loc[df_result['자전거도로'] < 0] = 0
         df_result.loc[df_result['지하철역'] < 0, '지하철역'] = 0
         df_result.loc[df_result['공원'] < 0, '공원'] = 0
         df_result.loc[df_result['관광지'] < 0, '관광지'] = 0
         df_result.loc[df_result['대학'] < 0, '대학'] = 0
 
         df_result=df_result.round(2)
+        
+        df_result['장소명']=df_result['장소명'].astype(str).str.replace(' ', '_')
+        
+        #print(df_result['장소명'])
 
         return render(request,"mainresult.html",{'result':df_result})
     
@@ -180,5 +184,5 @@ def jeju_analysis(request):
             'tour':request.GET['tour'],
             'school':request.GET['school'],
             'pop':request.GET['pop']}
-        print(dic)
+        #print(dic)
         return HttpResponse(json.dumps(dic), content_type="application/json")
