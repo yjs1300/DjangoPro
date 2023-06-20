@@ -152,6 +152,12 @@
                                         {% endfor %}
                                 </table>
                             </div>
+                            <div style="float: right;">
+                                <form method="POST" action="/myhist/save" name="savefrm">{% csrf_token %}
+                                    <input type="hidden" name="dataframe" value="{{ result }}">
+                                    <button type="button" id="savebtn" class="btn btn-primary">결과 저장</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -251,6 +257,7 @@
     var myPieChart
     var myBarChart
     $(document).ready(function() {
+        
       $('input[type="button"]').on('click', function(event) {
         event.preventDefault();
   
@@ -269,6 +276,12 @@
             console.log(xhr.status + ": " + xhr.responseText);
           }
         });
+      });
+
+      $("#savebtn").on("click", function(){
+        if (confirm("저장하시겠습니까?")){
+            savefrm.submit();
+        }
       });
     });
     

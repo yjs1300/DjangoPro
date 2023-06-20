@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "Login",
     "Submap",
     "ShowChart",
+    "myhist",
 ]
 
 MIDDLEWARE = [
