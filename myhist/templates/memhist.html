@@ -63,9 +63,10 @@
                 </a>
                 <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="login.html">통계</a>
-                        <a class="collapse-item" href="forgot-password.html">현황</a>
-                        <a class="collapse-item" href="#">보고서</a>
+                        <a class="collapse-item" href="/statistics/">통계</a>
+                        <a class="collapse-item" href="/submap/submap/">현황</a>
+                        <a class="collapse-item" href="/report/report/">보고서</a>
+                        <a class="collapse-item" href="/myhist">결과이력</a>
                         <div class="collapse-divider"></div>
                     </div>
                 </div>
@@ -109,55 +110,25 @@
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
                                         <tr>
-                                          <th>장소명</th>
-                                          <th>자전거도로</th>
-                                          <th>정류장/지하철역</th>
-                                          <th>공원</th>
-                                          <th>관광지</th>
-                                          <th>학교</th>
-                                          <!--<th>총이동</th>-->
-                                          <th>예측</th>
+                                            <th>등록날짜</th>
+                                            <th>장소명</th>
+                                            <th>자전거도로</th>
+                                            <th>정류장/지하철역</th>
+                                            <th>공원</th>
+                                            <th>관광지</th>
+                                            <th>학교</th>
+                                            <th>예측</th>
                                         </tr>
-                                        {% for index, row in result.iterrows %}
-                                        <tr>
-                                            <td>
-                                                <form action='/showmap/analysis' method='GET'>
-                                                    <input type='hidden' name='place' value='{{ row.장소명 }}'>
-                                                    <input type='hidden' name='cycle' value='{{ row.자전거도로 }}'>
-                                                    <input type='hidden' name='train' value='{{ row.지하철역 }}'>
-                                                    <input type='hidden' name='park' value='{{ row.공원 }}'>
-                                                    <input type='hidden' name='tour' value='{{ row.관광지 }}'>
-                                                    <input type='hidden' name='school' value='{{ row.대학 }}'>
-                                                    <input type='hidden' name='pop' value='{{ row.총이동 }}'>
-                                                    <input type='button' value={{ row.장소명 }} class="btn btn-light">
-                                                </form> 
-                                            </td> 
-                                            <td>{{ row.자전거도로 }} %</td>
-                                            <td>{{ row.지하철역 }} %</td>
-                                            <td>{{ row.공원 }} %</td>
-                                            <td>{{ row.관광지 }} %</td>
-                                            <td>{{ row.대학 }} %</td>
-                                            <!--<td>{{ row.총이동 }} 명</td>-->
-                                            <td>
-                                                {% if row.예측값 == 0 %}
-                                                    비추천
-                                                {% elif row.예측값 == 1 %}
-                                                    보통
-                                                {% else %}
-                                                    적합
-                                                {% endif %}
-                                            </td>
-                                        </tr>
-                                        {% endfor %}
+                                    </thead>
+                                    <tbody id="dataShow"></tbody>
                                 </table>
                             </div>
-                            <div style="float: right;">
-                                <form method="POST" action="/myhist/save" name="savefrm">{% csrf_token %}
-                                    <input type="hidden" name="dataframe" value="{{ result }}">
-                                    <button type="button" id="savebtn" class="btn btn-primary">결과 저장</button>
-                                </form>
-                            </div>
+
+                            <!-- 페이징처리 -->
+                            <div id="pageShow" style="text-align: center;"></div>
+
                         </div>
                     </div>
                 </div>
@@ -257,7 +228,8 @@
     var myPieChart
     var myBarChart
     $(document).ready(function() {
-        
+        histAjax(1);
+
       $('input[type="button"]').on('click', function(event) {
         event.preventDefault();
   
@@ -278,11 +250,6 @@
         });
       });
 
-      $("#savebtn").on("click", function(){
-        if (confirm("저장하시겠습니까?")){
-            savefrm.submit();
-        }
-      });
     });
     
     function piechart(data) {
@@ -363,6 +330,67 @@
               }
             }
         });
+    }
+
+    // 회원 저장 기록 불러오는 ajax 
+    function histAjax(page_no){
+
+        $.ajax({
+            type:"get",
+            url:"/myhist/history",
+            data:{"page":page_no},
+            dataType:"json",
+            success:function(datas){
+
+                // console.log(datas['pages'][0].now);
+                let str = "";
+                $.each(datas['res'], function(index, data){
+                    // console.log(data);
+                    str += "<tr>";
+                    str += "<td>" + data['date'] + "</td>";
+                    str += "<td>" + data['addr'] + "</td>";
+                    str += "<td>" + data['bike'] + "</td>";
+                    str += "<td>" + data['transport'] + "</td>";
+                    str += "<td>" + data['park'] + "</td>";
+                    str += "<td>" + data['tour'] + "</td>";
+                    str += "<td>" + data['school'] + "</td>";
+                    let pre = "";
+                    if(data['pred'] === "0"){
+                        pre += "비추천";
+                    }else if(data['pred'] === "1"){
+                        pre += "보통";
+                    }else{
+                        pre += "적합";
+                    }
+                    str += "<td>" + pre + "</td>";
+                    str += "</tr>";
+                });
+
+                $("#dataShow").html(str);
+                
+                let pstr = "";
+                if(datas['pages'][0].pre != "f"){
+                    
+                    pstr += "<a class='btn btn-primary' role='button' href='javascript:histAjax(" + datas['pages'][0].pre + ")'>이전</a>";
+
+                }
+                pstr += "&nbsp;&nbsp;[ " + datas['pages'][0].now + " / " + datas['pages'][0].tot + " ]&nbsp;&nbsp;";
+
+                if(datas['pages'][0].next != "f"){
+                    
+                    pstr += "<a class='btn btn-primary' role='button' href='javascript:histAjax(" + datas['pages'][0].next + ")'>다음</a>";
+                    
+                }
+
+                $("#pageShow").html(pstr);
+
+                
+            },
+            error:function(e){
+                console.log(e);
+            }
+        });
+
     }
   </script>
   
