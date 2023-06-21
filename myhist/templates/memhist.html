@@ -115,7 +115,7 @@
                                             <th>등록날짜</th>
                                             <th>장소명</th>
                                             <th>자전거도로</th>
-                                            <th>정류장/지하철역</th>
+                                            <th>정류장</th>
                                             <th>공원</th>
                                             <th>관광지</th>
                                             <th>학교</th>
@@ -144,7 +144,7 @@
                     <!-- Content Row -->
                     <!-- Bar Chart -->
                     <div class="row">
-                        <div class="col-xl-8 col-lg-7">
+                        <div class="col-xl-5 col-lg-5">
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
                                     <h6 class="m-0 font-weight-bold text-primary">Bar Chart</h6>
@@ -161,7 +161,7 @@
                         </div>
 
                         <!-- Donut Chart -->
-                        <div class="col-xl-4 col-lg-5">
+                        <div class="col-xl-6 col-lg-6">
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
                                     <h6 class="m-0 font-weight-bold text-primary">Donut Chart</h6>
@@ -229,27 +229,6 @@
     var myBarChart
     $(document).ready(function() {
         histAjax(1);
-
-      $('input[type="button"]').on('click', function(event) {
-        event.preventDefault();
-  
-        var form = $(this).closest('form'); // 클릭된 버튼의 부모 폼 요소
-        var formData = form.serialize(); // 폼 데이터
-  
-        $.ajax({
-          url: form.attr('action'),
-          type: form.attr('method'),
-          data: formData,
-          success: function(response) {
-            plotchart(response);
-            piechart(response);
-          },
-          error: function(xhr, errmsg, err) {
-            console.log(xhr.status + ": " + xhr.responseText);
-          }
-        });
-      });
-
     });
     
     function piechart(data) {
@@ -261,10 +240,10 @@
 
             type: 'doughnut',
             data: {
-                labels: ['자전거도로', '지하철역/정류장', '공원', '관광지', '학교'],//,'유동인구'],
+                labels: ['자전거도로', '정류장', '공원', '관광지', '학교'],//,'유동인구'],
                 datasets: [{
                 backgroundColor: ['red', 'green', 'blue', 'orange', 'purple'],//,'red'],
-                hoverBackgroundColor: ['lightcoral', 'lightgreen', 'lightblue', 'lightsalmon', 'lightpurple'],//,'lightcoral'], // 각 데이터에 대한 hover 색상 설정
+                hoverBackgroundColor: ['lightcoral', 'lightgreen', 'lightblue', 'lightsalmon', 'purple'],//,'lightcoral'], // 각 데이터에 대한 hover 색상 설정
                 borderColor: 'rgba(0, 0, 0, 0.1)',
                 data: [
                 Number(data.cycle),
@@ -295,10 +274,10 @@
         myBarChart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: ['자전거도로', '지하철역/정류장', '공원', '관광지', '학교'],//,'유동인구'],
+                labels: ['자전거도로', '정류장', '공원', '관광지', '학교'],//,'유동인구'],
                 datasets: [{
                 backgroundColor: ['red', 'green', 'blue', 'orange', 'purple'],//,'red'],
-                hoverBackgroundColor: ['lightcoral', 'lightgreen', 'lightblue', 'lightsalmon', 'lightpurple'],//,'lightcoral'], // 각 데이터에 대한 hover 색상 설정
+                hoverBackgroundColor: ['lightcoral', 'lightgreen', 'lightblue', 'lightsalmon', 'purple'],//,'lightcoral'], // 각 데이터에 대한 hover 색상 설정
                 borderColor: 'rgba(0, 0, 0, 0.1)',
                 data: [
                 Number(data.cycle),
@@ -331,7 +310,20 @@
             }
         });
     }
-
+    function idfunc(id){
+        $.ajax({
+            type:"get",
+            url:"/myhist/histchart?id="+id,
+            success:function(datas){
+                console.log(1)
+                plotchart(datas);
+                piechart(datas);
+            },
+            error:function(e){
+                console.log(e);
+            }
+        });
+    }
     // 회원 저장 기록 불러오는 ajax 
     function histAjax(page_no){
 
@@ -348,12 +340,12 @@
                     // console.log(data);
                     str += "<tr>";
                     str += "<td>" + data['date'] + "</td>";
-                    str += "<td>" + data['addr'] + "</td>";
-                    str += "<td>" + data['bike'] + "</td>";
-                    str += "<td>" + data['transport'] + "</td>";
-                    str += "<td>" + data['park'] + "</td>";
-                    str += "<td>" + data['tour'] + "</td>";
-                    str += "<td>" + data['school'] + "</td>";
+                    str += "<td><button class='btn btn-light' onclick='javascript:idfunc(" + data['id'] + ")'>" + data['addr'] + "</=></td>";
+                    str += "<td>" + data['bike'] + "% </td>";
+                    str += "<td>" + data['transport'] + "% </td>";
+                    str += "<td>" + data['park'] + "% </td>";
+                    str += "<td>" + data['tour'] + "% </td>";
+                    str += "<td>" + data['school'] + "% </td>";
                     let pre = "";
                     if(data['pred'] === "0"){
                         pre += "비추천";

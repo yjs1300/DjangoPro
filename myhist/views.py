@@ -48,7 +48,7 @@ def histFunc(request):
 
     data_res = []
     for s in datas:
-        dic = {'addr':s.addr, 'bike':s.bike_load, 'transport':s.transport, 'park':s.park, \
+        dic = {'id':s.id,'addr':s.addr, 'bike':s.bike_load, 'transport':s.transport, 'park':s.park, \
                'tour':s.tour, 'school':s.school, 'pred':s.pred, 'date':s.reg_date.strftime("%Y-%m-%d %H:%M:%S")}
         data_res.append(dic)
     # print(data_result)
@@ -82,3 +82,15 @@ def histFunc(request):
         
 
     return HttpResponse(json.dumps(data_result), content_type="application/json")
+
+#  * @author jujuclubw
+#  * @email dlrkdwn428@gmail.com
+#  * @create date 2023-06-21 12:21:06
+#  * @modify date 2023-06-21 12:21:06
+#  * @desc [add chart]
+def chartFunc(request):
+    print(request.GET['id'])
+    data = MemberHist.objects.get(id=request.GET['id'])
+    dic = {'cycle':data.bike_load, 'train':data.transport, 'park':data.park, \
+               'tour':data.tour,'school':data.school,}
+    return HttpResponse(json.dumps(dic), content_type="application/json")
