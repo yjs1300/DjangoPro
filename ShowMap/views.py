@@ -115,13 +115,14 @@ def jeju_analysis(request):
         result_data = uclid_process(jeju_facility_df,spot_data)
         # 컬럼에 함수 적용하여 결과 저장
 
-
         #모델예측
         # '장소명' 컬럼을 제외한 값 선택
         X = result_data.drop(columns=['장소명'])
-        # 데이터 표준화
-        # scaler = StandardScaler()
-        # X_scaled = scaler.fit_transform(X)
+        
+        # # 모델 로드
+        # import joblib
+        # model = joblib.load('static/model/MLP.pkl') 
+       
         # pkl 파일 경로
         #pkl_file_path = "static/model/knn_model_5_stdX.h5"
         # print(os.getcwd())
@@ -130,15 +131,11 @@ def jeju_analysis(request):
         # pkl 파일 로드
         with open(pkl_file_path, 'rb') as file:
             model = pickle.load(file)
-        
-        # # 모델 로드
-        # import joblib
-        # model = joblib.load('static/model/MLP.pkl') 
+            
         # 예측 수행
         y_pred = model.predict(X)
         df_pred = pd.DataFrame({'예측값': y_pred})
 
-        
         df_result = pd.concat([result_data['장소명'],X, df_pred], axis=1)
         # 출력전 위경도 간 데이터 미터로 변환
         df_result['자전거도로'] = result_data.apply(lambda row: convert(row['자전거도로'], row['자전거도로']), axis=1)
@@ -147,11 +144,12 @@ def jeju_analysis(request):
         df_result['관광지'] = result_data.apply(lambda row: convert(row['관광지'], row['관광지']), axis=1)
         df_result['대학'] = result_data.apply(lambda row: convert(row['대학'], row['대학']), axis=1)
         
+        #서울시 최대거리 기준으로 점수화
         #print('공원',convert(0.03433583,0.03433583),'관광지',convert(0.07511377,0.07511377),'대학',convert(0.08019374,0.08019374))
         #공원 5395.35 관광지 11802.97 대학 12601.21
         
-        df_result['자전거도로']=100-(df_result['자전거도로']/13400*100)
-        df_result['지하철역']=100-(df_result['지하철역']/7500*100)
+        df_result['자전거도로']=100-(df_result['자전거도로']/13500*100)
+        df_result['지하철역']=100-(df_result['지하철역']/7700*100)
         df_result['공원']=100-(df_result['공원']/6000*100)
         df_result['관광지']=100-(df_result['관광지']/10500*100)
         df_result['대학']=100-(df_result['대학']/12000*100) 

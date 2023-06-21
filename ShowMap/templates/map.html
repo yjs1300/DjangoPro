@@ -104,11 +104,7 @@
         <div id='rebtn'>
         <button onclick="removeMarker2()" class="btn btn-warning btn-sm">마커 없애기</button>
         </div>
-                <div id="clickLatlng"></div>
 
-                    <div id="clickLatlng2"></div>
-                    
-                    
                     <form action='/showmap/analysis' method='post' id='h_form' > {% csrf_token %}
                     <div class="row">
                      <div class="w-50 p-3">
@@ -158,7 +154,7 @@
 
                         <div class="col">
                             <div class="position-absolute top-50 start-0">
-                            <input type='submit' value='분석'  class="btn btn-warning btn-mi">
+                            <input type='button' value='분석'  class="btn btn-warning btn-mi" onclick='formchk()'>
                             </div>
                         </div>
                     </form>
@@ -169,6 +165,23 @@
                         src="//dapi.kakao.com/v2/maps/sdk.js?appkey=594a25514f075013c23bd3bf65936508&libraries=services"></script>
                     <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
                     <script>
+
+                    function formchk() {
+                        let form = document.getElementById("h_form");
+                        let text1 = document.getElementById("lat1");
+                        let isEmpty = false;
+                        
+                        if (text1.value.trim() === "") {
+                            isEmpty = true;
+                        }
+
+                        if (isEmpty) {
+                            $('#juso1').css("color", "red");
+                            $('#juso1').val('위치를 선택해주세요')
+                        } else {
+                            form.submit();
+                        }
+                    }
 
                     //지도에 표시된 마커 객체를 가지고 있을 배열입니다
                     let markers2 = [];
@@ -369,6 +382,7 @@
 
                             //마커의 주소 얻은 후 구,위도,경도 html hidden tag에 추가
                             function update_marker_info() {
+                                $('#juso1').css("color", "black");
                                 document
                                     .getElementById('h_form')
                                     .reset()
