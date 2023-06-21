@@ -8,9 +8,9 @@
 from django.shortcuts import redirect, HttpResponse, HttpResponseRedirect, render
 from django.http import JsonResponse
 import json
-import folium
-from folium.plugins import MarkerCluster
-from folium.plugins import MarkerCluster,FastMarkerCluster
+# import folium
+# from folium.plugins import MarkerCluster
+# from folium.plugins import MarkerCluster,FastMarkerCluster
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -136,16 +136,23 @@ from django.http import JsonResponse
 
 
 
-def showstat(request):
+def showstat2(request):
     df2 = pd.read_csv("월별이용건수.csv", encoding="UTF-8")
     chartdata2 = df2.to_json(orient='records',force_ascii=False)  
     chartdata2 = json.dumps(chartdata2) # 디코딩
     chartdata2 = json.loads(chartdata2) # 인코딩
 
-    context= {'chartdata2':chartdata2}
+    df3 = pd.read_csv("월별 신규가입자수.csv", encoding="UTF-8")
+    chartdata3 = df3.to_json(orient='records',force_ascii=False)  
+    chartdata3 = json.dumps(chartdata3) # 디코딩
+    chartdata3 = json.loads(chartdata3) # 인코딩
+    
+    df4 = pd.read_csv("연도별 제주관광객수.csv", encoding="UTF-8")
+    chartdata4 = df4.to_json(orient='records',force_ascii=False)  
+    chartdata4 = json.dumps(chartdata4) # 디코딩
+    chartdata4 = json.loads(chartdata4) # 인코딩
 
-    return JsonResponse("charts.html",context)
-    return render(request,"charts.html",{'chartdata2':chartdata2 })
+    return render(request,"charts2.html",{'chartdata2':chartdata2 ,'chartdata3':chartdata3,'chartdata4':chartdata4})
 
 
 
