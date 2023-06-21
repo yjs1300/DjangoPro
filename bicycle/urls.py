@@ -28,5 +28,6 @@ urlpatterns = [
     path("report/", include("Report.urls")), # app name = Report의 url
     path("statistics/", include("ShowStat.urls")), # 통계 페이지 @jujuclubw 230613
     path("showchart/",include("ShowChart.urls")), 
-    path("submap/",include("Submap.urls")) # 현황페이지 링크
+    path("submap/",include("Submap.urls")), # 현황페이지 링크
+    path("myhist/",include("myhist.urls")),
 ]

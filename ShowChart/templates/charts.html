@@ -110,8 +110,8 @@
                         <div class="card-body">   
                             
                                 <div class="map-container"> <!-- 한 화면에 표시하기 위해 container css 새로 생성 -->
-                                    <div class="map-section">
-                                    <div class="map-title">서울시 대여소 현황</div>
+                                    <div class="map-section" style='width: 600px;'>
+                                    <div class="map-title">(1) 서울시 대여소 현황</div>
                                     <div class="map">
                                     {% if maps1 %}
                                         {{maps1 | safe}}                                                 
@@ -122,20 +122,18 @@
                                 </div>
                                 <br/>
                                 <br/>
-                                    {% comment %} folium 데이터를 받아올때 | safe를 사용해야 함{% endcomment %}
-                                    <div class="map-section">
-                                        <div class="map-title">서울시 유동인구 현황</div>
+
+                                        <div class="map-section">
+                                            <div class="map-title">(3) 서울시 대여소 현황</div>
                                             <div class="map">
-                                            {% if maps1 %}
-                                                {{maps2 | safe}}
+                                            {% if maps3 %}
+                                                {{maps3 | safe}}                                                 
                                             {% else %}
                                                 <div>자료가 넘어오지 않았습니다.</div>
                                             {% endif%}
                                             </div>
                                         </div>
                                     </div>
-                                    
-                            
                             </div>
                         </div>
                         
@@ -163,21 +161,10 @@
                         <div class="card-body">   
                             
                                 <div class="map-container" style="justify-content: space-around; align-items: center; "> <!-- 한 화면에 표시하기 위해 container css 새로 생성 -->
-                                    <div class="map-section">
-                                    <div class="map-title">서울시 대여소 현황</div>
-                                    <div class="map">
-                                    {% if maps1 %}
-                                        {{maps1 | safe}}                                                 
-                                    {% else %}
-                                        <div>자료가 넘어오지 않았습니다.</div>
-                                    {% endif%}
-                                    </div>
-                                </div>
-                                <br/>
-                                <br/>
-                                    {% comment %} folium 데이터를 받아올때 | safe를 사용해야 함{% endcomment %}
-                                    <div class="map-section">
-                                        <div class="map-title">서울시 유동인구 현황</div>
+                                    <div class="map-container"> <!-- 한 화면에 표시하기 위해 container css 새로 생성 -->
+                                                                            {% comment %} folium 데이터를 받아올때 | safe를 사용해야 함{% endcomment %}
+                                    <div class="map-section"style='width: 600px;'>
+                                        <div class="map-title">(2) 서울시 유동인구 현황</div>
                                             <div class="map">
                                             {% if maps1 %}
                                                 {{maps2 | safe}}
@@ -185,8 +172,23 @@
                                                 <div>자료가 넘어오지 않았습니다.</div>
                                             {% endif%}
                                             </div>
-                                        </div>
                                     </div>
+                                    <br/>
+                                    <br/>
+                                        {% comment %} folium 데이터를 받아올때 | safe를 사용해야 함{% endcomment %}
+                                        <div class="map-section">
+                                            <div class="map-title">(4) 제주도 대여소 현황</div>
+                                                <div class="map">
+                                                {% if maps4 %}
+                                                    {{maps4 | safe}}
+                                                {% else %}
+                                                    <div>자료가 넘어오지 않았습니다.</div>
+                                                {% endif%}
+                                                </div>
+                                            </div>
+                                        </div>
+                                </div>
+
                                     
                             
                             </div>
@@ -194,60 +196,7 @@
                         
                     </div>
 
-                    {% comment %} <!-- Content Row -->
-                    <div class="row">
-                        <div class="col-xl-8 col-lg-7">
-                            <!-- Area Chart -->
-                           <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Area Chart</h6>
-                                </div>
-                                <div class="card-body">
-                                    <div class="chart-area">
-                                        <canvas id="myAreaChart"></canvas>
-                                    </div>
-                                    <hr>
-                                    Styling for the area chart can be found in the
-                                    <code>/js/demo/chart-area-demo.js</code> file.
-                                </div>
-                            </div>
-
-                            <!-- Bar Chart -->
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Bar Chart</h6>
-                                </div>
-                                <div class="card-body">
-                                    <div class="chart-bar">
-                                        <canvas id="myBarChart"></canvas>
-                                    </div>
-                                    <hr>
-                                    Styling for the bar chart can be found in the
-                                    <code>/js/demo/chart-bar-demo.js</code> file.
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <!-- Donut Chart -->
-                        <div class="col-xl-4 col-lg-5">
-                            <div class="card shadow mb-4">
-                                <!-- Card Header - Dropdown -->
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Donut Chart</h6>
-                                </div> 
-                                <!-- Card Body -->
-                                <div class="card-body">
-                                    <div class="chart-pie pt-4">
-                                        <canvas id="myPieChart"></canvas>
-                                    </div>
-                                    <hr>
-                                    Styling for the donut chart can be found in the
-                                    <code>/js/demo/chart-pie-demo.js</code> file.
-                                </div>
-                            </div>
-                        </div>
-                    </div>  {% endcomment %}
+                    
 
                 </div>
                 <!-- /.container-fluid -->
@@ -264,12 +213,6 @@
                 </div>
             </footer> 
             <!-- End of Footer -->
-
-        {% comment %} </div> {% endcomment %}
-        <!-- End of Content Wrapper -->
-
-    {% comment %} </div> {% endcomment %}
-    <!-- End of Page Wrapper -->
 
     <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">
