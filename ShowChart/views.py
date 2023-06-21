@@ -21,6 +21,7 @@ def card(request):
     return render(request,"cards.html")
 def forgotpw(request):
     return render(request,"forgot-password.html")
+
 def charts(request):
     
     df = pd.read_excel("./rental3.xlsx")
