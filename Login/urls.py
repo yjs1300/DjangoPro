@@ -1,5 +1,5 @@
 from django.urls import path
-from django.contrib.auth import views as auth_views
+# from django.contrib.auth import views as auth_views
 from . import views
 
 app_name = "Login"
@@ -12,5 +12,12 @@ urlpatterns = [
   path('logout/',views.logout),
   
   # 회원가입 기능
-  path('signup/',views.signup, name='signup')
+  path('signup/',views.signup),
+  
+  # 아이디 중복확인 창 띄우기
+  path('check',views.checkpop),
+  
+  # 아이디 중복확인을 진행함.
+  path("check/checkid",views.checkid),
+
 ]

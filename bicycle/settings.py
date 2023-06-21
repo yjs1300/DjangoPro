@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "Login",
     "Submap",
     "ShowChart",
+    "myhist",
 ]
 
 MIDDLEWARE = [
@@ -139,6 +140,7 @@ STATIC_URL = "static/"
 STATICFILES_DIRS =[
     os.path.join(BASE_DIR,"bicycleapp","static"),
     os.path.join(BASE_DIR,"ShowMap"),
+    os.path.join(BASE_DIR, "myhist"),
 ]
 STATIC_ROOT = os.path.join(BASE_DIR,'static')
 

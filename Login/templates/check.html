@@ -1,0 +1,69 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+
+    <link rel='stylesheet' type="text/css" href="{% static 'css/login.css' %}"/>
+    <title>중복확인</title>
+</head>
+<body>
+    {% comment %} 폼에서 전송 버튼을 누르면 아이디 중복처리를 진행하고 이를 회원가입 창에 띄운다.  {% endcomment %}
+    
+        <form action="checkid" name="frm">
+            <strong>아이디 중복검사</strong>
+            <input type="text" id="checkid" name='idcheck'>
+            <div id="msg"></div>
+            <button id="pass">중복확인</button>
+            <button id="send">확인</button> 
+        </form>
+    {% comment %} <form action="checkid" name="frm">
+        <input type="text" id="checkid" name='idcheck'>
+    </form>
+        <div id="msg"></div>
+        <button id="pass">중복확인</button>
+        <button id="send">확인</button>  {% endcomment %}
+<script>
+    $(document).ready(function(){
+
+        $("#checkid").val(window.opener.$("#account1").val());
+        // 값 확인진행
+       // console.log(frm.idcheck.value);
+        $("#pass").click(function(){
+            event.preventDefault(); 
+            $.ajax({
+                url : "check/checkid",
+                type : "GET", 
+                data : {'idcheck':frm.idcheck.value},
+                dataType: 'json',
+                success :function(result){
+                  
+                    if(result[0].result == "true"){
+                        $('#msg').html('<strong>아이디 중복입니다.</strong>');
+                        $("#send").prop("disabled", true); // 확인 버튼 비활성화
+                    }else {
+                        $('#msg').html('<strong>사용가능한 아이디 입니다.</strong>');
+                        $("#send").prop("disabled", false); // 확인 버튼 활성화
+                        
+                    }
+                    
+                },
+                error: function() {
+                    console.log('통신실패!!');
+                },
+            })
+        })
+
+        $("#send").click(function(){
+            event.preventDefault(); 
+            $("#account1",window.opener.document).val($("#checkid").val());            
+            window.close();
+        })
+    })
+
+   
+</script>
+</body>
+</html>
