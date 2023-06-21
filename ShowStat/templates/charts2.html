@@ -1,0 +1,393 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>bike - Charts</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="{%static 'vendor/fontawesome-free/css/all.min.css'%}" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="{%static 'css/sb-admin-2.min.css'%}" rel="stylesheet">
+</head>
+
+<body id="page-top">
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+            <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="">
+                <div class="sidebar-brand-icon rotate-n-15">
+                    <i class="fas fa-laugh-wink"></i>
+                </div>
+                <div class="sidebar-brand-text mx-3">CHARTS</div>
+            </a>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item">
+                <a class="nav-link" href="/">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>HOME</span></a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+            </div>
+
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
+                    aria-expanded="true" aria-controls="collapsePages">
+                    <i class="fas fa-fw fa-folder"></i>
+                    <span>메뉴</span>
+                </a>
+                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="../statistics/">분석</a>
+                        <a class="collapse-item" href="../submap/submap">현황</a>
+                        <a class="collapse-item" href="../report/report">보고서</a>
+                        <div class="collapse-divider"></div>
+                    </div>
+                </div>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
+
+            <!-- Sidebar Toggler (Sidebar) -->
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+
+        </ul>
+        <!-- End of Sidebar -->
+    <!-- Custom fonts for this template -->
+    <link href="{%static 'vendor/fontawesome-free/css/all.min.css'%}" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{%static 'css/sb-admin-2.min.css'%}" rel="stylesheet">
+
+    <!-- Custom styles for this page -->
+    <link href="{%static 'vendor/datatables/dataTables.bootstrap4.min.css'%}" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <!-- Main Content -->
+            <div id="content">
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                    <!-- DataTales Example -->
+                    {% comment %} <div class="card shadow mb-4">
+                        <div class="card-body">
+                            
+                        </div>
+                    </div> 여기가 맨위 였던것 {% endcomment %}
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content" >
+
+                <!-- Topbar -->
+
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid" >
+
+                    <!-- Content Row -->
+                    <div class="row" >
+                        <div class="col-xl-8 col-lg-7">
+                            <!-- Area Chart -->
+                            <span>
+                                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                            
+                            </span>
+                            <div class="card shadow mb-4" style="width: 1250px;">
+                                <div class="card-header py-3" style="width: 1250px;">
+                                    <h6 class="m-0 font-weight-bold text-primary">공공자전거 월별 이용건수(18~22년)</h6>
+                                </div>
+                                <div class="card-body" style="width: 1200px;">
+                                    <div class="chart-area" style="width: 1200px;">
+                                        <canvas id="myChart2" style="width: 900px; height: 250px;"></canvas>
+
+                                        <script>
+                                            // 1번째 그래프
+                                            var jsonData2 = {{chartdata2|safe}}
+                        
+                                              // 데이터 추출함
+                                            var labels2 = jsonData2.map(function(item) {
+                                              return item.연월;
+                                              });
+                        
+                                              // 데이터 추출함
+                                            var data2 = jsonData2.map(function(item) {
+                                                return item.이용건수;
+                                              });
+                                                  
+                                            // 파이 차트를 그릴 캔버스 요소 선택
+                                            var ctx2 = document.getElementById('myChart2').getContext('2d');
+                        
+                                            // 차트 초기화
+                                            var myChart2 = new Chart(ctx2, {
+                                              type: 'line',
+                                              data: {
+                                                labels: labels2,
+                                                datasets: [{
+                                                  label: '공공자전거 월별 이용건수(18~22년)',
+                                                  data: data2,
+                                                  backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                                  borderColor: 'rgba(75, 192, 192, 1)',
+                                                  borderWidth: 2
+                                                }]
+                                              },
+                                                  
+                                              options: {    // 차트 옵션 설정
+                                                
+                                                //aspectRatio: 4, // 가로 세로 비율을 1로 설정 (가로와 세로 크기가 동일하게 표시)
+                                                y: {
+                                                    beginAtZero: true  // Y 축이 0부터 시작하도록 설정
+                                                        
+                                                  }
+                                                    
+                                              }
+                                            });
+                                        </script>
+                                    </div>
+                                    <hr>
+                                    위 차트를 보면 계절의 영향을 받는 것을 알 수있다. 여름에는 이용건수가 증가하는 경향이 있으며 겨울에는 감소하는 경향을 보인다.<br/>
+                                    또한 이용건수는 늘어나는 추세를 보여지며 2020년 코로나 시국 이후에 더욱 증가하는 경향이 있다.
+
+                                </div>
+                            </div>
+
+                            <!-- Bar Chart -->
+                            <span>
+                                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                              {% comment %} 연도별 공공자전거  {% endcomment %}
+                            </span>
+                            <div class="card shadow mb-4"style="width: 1250px;">
+                                <div class="card-header py-3" style="width: 1250px;">
+                                    <h6 class="m-0 font-weight-bold text-primary">공공자전거 월별 신규 가입자수(18~22년)</h6>
+                                </div>
+                                <div class="card-body" style="width: 1200px;">
+                                    <div class="chart-bar" style="width: 1200px;">
+                                        <canvas id="myChart3" style="width: 900px; height: 250px;"></canvas>
+
+                                        <script>
+                                        // 2번째 그래프
+                                        var jsonData3 = {{chartdata3|safe}}
+                                        // 데이터 추출함
+                                        var labels3 = jsonData3.map(function(item) {
+                                            return item.연월;
+                                            });
+                                            
+                                            // 데이터 추출함
+                                        var data3 = jsonData3.map(function(item) {
+                                            return item.가입자수;
+                                            });
+                                        // 파이 차트를 그릴 캔버스 요소 선택
+                                        var ctx3 = document.getElementById('myChart3').getContext('2d');
+
+                                        // 차트 초기화
+                                        var myChart3 = new Chart(ctx3, {
+                                            type: 'line',
+                                            data: {
+                                            labels: labels3,
+                                            datasets: [{
+                                                label: '공공자전거 월별 신규 가입자수(18~22년)',
+                                                data: data3,
+                                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                                borderColor: 'rgba(75, 192, 192, 1)',
+                                                borderWidth: 2
+                                            }]
+                                            },
+                                                
+                                            options: {    // 차트 옵션 설정
+                                            // aspectRatio: 4, // 가로 세로 비율을 1로 설정 (가로와 세로 크기가 동일하게 표시)
+                                            y: {
+                                                beginAtZero: true  // Y 축이 0부터 시작하도록 설정
+                                                    
+                                                }
+                                                
+                                            }
+                                        });
+                                    </script>
+
+
+                                    </div>
+                                    <hr>
+                                    위 차트를 보면 계절의 영향을 받는 것을 알 수있다. 여름에는 신규 가입건수가 증가 하는 경향이 있으며 겨울에는 감소하는 경향을 보인다.<br/>
+                                    하지만 이용건수가 꾸준하게 늘어나는 것과 반대로 누적 가입자수가 증가하는 것에 반비례하여 신규 가입자 수는 감소하는 추세를 보이고있다.
+
+                  
+                                </div>
+                            </div>
+                            <!--  3번째 그래프 ========================================-->
+                            <!-- 3 Chart -->
+                            <span>
+                                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                              {% comment %} 제주관광객수  {% endcomment %}
+                            </span>
+                            <div class="card shadow mb-4"style="width: 1250px;">
+                                <div class="card-header py-3" style="width: 1250px;">
+                                    <h6 class="m-0 font-weight-bold text-primary">제주 관광객수</h6>
+                                </div>
+                                <div class="card-body" style="width: 1200px;">
+                                    <div class="chart-bar" style="width: 1200px;">
+                                        <canvas id="myChart4" style="width: 900px; height: 250px;"></canvas>
+
+                                        <script>
+                                        //3번째 그래프
+                      var jsonData4 = {{chartdata4|safe}}
+
+                      // 데이터 추출함
+                    var labels4 = jsonData4.map(function(item) {
+                      return item.연도월;
+                      });
+
+                      // 데이터 추출함
+                    var data4 = jsonData4.map(function(item) {
+                        return item.관광객수;
+                      });
+                    // 파이 차트를 그릴 캔버스 요소 선택
+                    var ctx4 = document.getElementById('myChart4').getContext('2d');
+
+                    // 파이 차트 초기화
+                    var myChart4 = new Chart(ctx4, {
+                      type: 'bar',
+                      data: {
+                        labels: labels4,
+                        datasets: [{
+                          label: '제주관광객수',
+                          data: data4,
+                          backgroundColor: 'rgba(135, 206, 250.2)',
+                          borderColor: 'rgba(135, 206, 250, 1)',
+                          borderWidth: 2
+                        }]
+                      },
+                      options: {    // 차트 옵션 설정
+                        //aspectRatio: 4, // 가로 세로 비율을 1로 설정 (가로와 세로 크기가 동일하게 표시)
+                        y: {
+                            beginAtZero: true  // Y 축이 0부터 시작하도록 설정
+                                
+                          }
+                            
+                      }
+                    });
+
+                    </script>
+
+
+                                    </div>
+                                    <hr>
+                                    제주도 관광객 수는 코로나가 제일 심했던 2020년에 대폭 감소하였다가 이후 다시 회복하여 미세하지만 
+                        예전보다 많은 관광객 수를 볼수 있다.
+                                </div>
+                            </div>
+
+                        </div>
+
+                        
+                    </div>
+
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; Your Website 2020</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" href="login.html">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="{%static 'vendor/jquery/jquery.min.js'%}"></script>
+    <script src="{%static 'vendor/bootstrap/js/bootstrap.bundle.min.js'%}"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="{%static 'vendor/jquery-easing/jquery.easing.min.js'%}"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="{%static 'js/sb-admin-2.min.js'%}"></script>
+
+    <!-- Page level plugins -->
+    <script src="{%static 'vendor/chart.js/Chart.min.js'%}"></script>
+    <script src="{%static 'vendor/datatables/jquery.dataTables.min.js'%}"></script>
+    <script src="{%static 'vendor/datatables/dataTables.bootstrap4.min.js'%}"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="{%static 'js/demo/chart-area-demo.js'%}"></script>
+    <script src="{%static 'js/demo/chart-pie-demo.js'%}"></script>
+    <script src="{%static 'js/demo/chart-bar-demo.js'%}"></script>
+
+</body>
+
+</html>

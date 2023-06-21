@@ -112,7 +112,9 @@
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
-                                            <th>등록날짜</th>
+                                            <th>등록날짜 &nbsp;&nbsp;
+                                                <a id="sort_a"></a>
+                                            </th>
                                             <th>장소명</th>
                                             <th>자전거도로</th>
                                             <th>정류장</th>
@@ -228,7 +230,7 @@
     var myPieChart
     var myBarChart
     $(document).ready(function() {
-        histAjax(1);
+        histAjax(1, "-reg_date");
     });
     
     function piechart(data) {
@@ -325,19 +327,30 @@
         });
     }
     // 회원 저장 기록 불러오는 ajax 
-    function histAjax(page_no){
+    function histAjax(page_no, sort_v){
+
+        if(sort_v === "-reg_date"){
+            $("#sort_a").html("<img src='/static/img/DESC.png'>");
+            $("#sort_a").attr("href", "javascript:histAjax(" + page_no + ", 'reg_date')");
+        }else{
+            $("#sort_a").html("<img src='/static/img/ASC.png'>");
+            $("#sort_a").attr("href", "javascript:histAjax(" + page_no + ", '-reg_date')");
+        }
+        
+        
+        
 
         $.ajax({
             type:"get",
             url:"/myhist/history",
-            data:{"page":page_no},
+            data:{"page":page_no, "sort":sort_v},
             dataType:"json",
             success:function(datas){
 
                 // console.log(datas['pages'][0].now);
                 let str = "";
                 $.each(datas['res'], function(index, data){
-                    // console.log(data);
+                    // console.log(data['id']);
                     str += "<tr>";
                     str += "<td>" + data['date'] + "</td>";
                     str += "<td><button class='btn btn-light' onclick='javascript:idfunc(" + data['id'] + ")'>" + data['addr'] + "</=></td>";
@@ -361,21 +374,21 @@
                 $("#dataShow").html(str);
                 
                 let pstr = "";
+
                 if(datas['pages'][0].pre != "f"){
                     
-                    pstr += "<a class='btn btn-primary' role='button' href='javascript:histAjax(" + datas['pages'][0].pre + ")'>이전</a>";
+                    pstr += "<a class='btn btn-primary' role='button' href='javascript:histAjax(" + datas['pages'][0].pre + ", \"" + sort_v + "\")'>이전</a>";
 
                 }
                 pstr += "&nbsp;&nbsp;[ " + datas['pages'][0].now + " / " + datas['pages'][0].tot + " ]&nbsp;&nbsp;";
 
                 if(datas['pages'][0].next != "f"){
                     
-                    pstr += "<a class='btn btn-primary' role='button' href='javascript:histAjax(" + datas['pages'][0].next + ")'>다음</a>";
+                    pstr += "<a class='btn btn-primary' role='button' href='javascript:histAjax(" + datas['pages'][0].next + ", \"" + sort_v + "\")'>다음</a>";
                     
                 }
 
                 $("#pageShow").html(pstr);
-
                 
             },
             error:function(e){

@@ -62,7 +62,7 @@ def uclid_process(data_merge,spot_data):
     #  * @create date 2023-06-16 09:42:16
     #  * @modify date 2023-06-16 09:42:16
     #  * @desc 거리 조정
-    result_data['자전거도로']=result_data['자전거도로']*1.15
+    result_data['자전거도로']=result_data['자전거도로']*1.10
     result_data['지하철역']=result_data['지하철역']*0.7
     result_data['공원']=result_data['공원']*0.55
     result_data['관광지']=result_data['관광지']*0.5

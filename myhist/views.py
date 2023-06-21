@@ -35,10 +35,15 @@ def histSaveFunc(request):
 
 def histFunc(request):
 
-    data = MemberHist.objects.filter(fk_m=request.session['user']).order_by('-reg_date')
+    try:
+        sort_val = str(request.GET.get("sort"))
+    except:
+        sort_val = '-reg_date'
+
+    data = MemberHist.objects.filter(fk_m=request.session['user']).order_by(sort_val)
     paginator = Paginator(data, 3)
     page = request.GET.get("page")
-    
+
     try:
         datas = paginator.page(page)
     except PageNotAnInteger:
@@ -48,7 +53,7 @@ def histFunc(request):
 
     data_res = []
     for s in datas:
-        dic = {'id':s.id,'addr':s.addr, 'bike':s.bike_load, 'transport':s.transport, 'park':s.park, \
+        dic = {'id':s.id, 'addr':s.addr, 'bike':s.bike_load, 'transport':s.transport, 'park':s.park, \
                'tour':s.tour, 'school':s.school, 'pred':s.pred, 'date':s.reg_date.strftime("%Y-%m-%d %H:%M:%S")}
         data_res.append(dic)
     # print(data_result)
