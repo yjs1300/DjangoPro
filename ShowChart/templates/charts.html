@@ -28,10 +28,10 @@
     <div id="wrapper">
 
         <!-- Sidebar -->
-        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+        <ul class="navbar-nav bg-gradient-secondary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
@@ -65,7 +65,7 @@
                 <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="../statistics/">분석</a>
-                        <a class="collapse-item" href="../submap/submap">현황</a>
+                        <a class="collapse-item" href="../showchart/charts">현황</a>
                         <a class="collapse-item" href="../report/report">보고서</a>
                         <div class="collapse-divider"></div>
                     </div>
@@ -110,7 +110,7 @@
                         <div class="card-body">   
                             
                                 <div class="map-container"> <!-- 한 화면에 표시하기 위해 container css 새로 생성 -->
-                                    <div class="map-section" style='width: 600px;'>
+                                    <div class="map-section" style='width: 550px;'>
                                     <div class="map-title">(1) 서울시 대여소 현황</div>
                                     <div class="map">
                                     {% if maps1 %}
@@ -163,7 +163,7 @@
                                 <div class="map-container" style="justify-content: space-around; align-items: center; "> <!-- 한 화면에 표시하기 위해 container css 새로 생성 -->
                                     <div class="map-container"> <!-- 한 화면에 표시하기 위해 container css 새로 생성 -->
                                                                             {% comment %} folium 데이터를 받아올때 | safe를 사용해야 함{% endcomment %}
-                                    <div class="map-section"style='width: 600px;'>
+                                    <div class="map-section"style='width: 550px;'>
                                         <div class="map-title">(2) 서울시 유동인구 현황</div>
                                             <div class="map">
                                             {% if maps1 %}
