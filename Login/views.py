@@ -2,18 +2,23 @@
 # from django.contrib.auth import authenticate, login
 # from django.shortcuts import redirect
 # from Login.forms import UserForm
+from django.http import HttpResponse,JsonResponse
 from django.shortcuts import render,redirect
 from . models import Member
+import json
+
 
 
 def login(request):
     if request.method == "GET":
         return render(request, "login.html")
+    
     elif request.method == "POST":
         m_id = request.POST.get('account')
         m_pwd = request.POST.get('password')
         errMsg = {}
         context= {}
+        
         if not (m_id and m_pwd):
             errMsg["err"] = "모든 값을 입력하세요"
             
@@ -35,29 +40,81 @@ def login(request):
                    
                  
 # 회원가입기능 구현 중
+
 def signup(request): 
-    if request.method =="GET":
-        return render(request,'login.html')
-    elif request.method == "POST": 
+    # if request.method =="GET":
+    #     return render(request,'login.html')
+    
+    # elif request.method == "POST": 
+    #     m_id = request.POST.get('account')
+    #     m_name = request.POST.get('username') 
+    #     m_pwd = request.POST.get('password')  
+    #     m_email = request.POST.get('email')
+        
+    if request.method == "POST": 
         m_id = request.POST.get('account')
         m_name = request.POST.get('username') 
         m_pwd = request.POST.get('password')  
-        m_email = request.POST.get('email')
-        
-        res_data = {}
+        m_email = request.POST.get('email') 
         
         if not (m_id and m_pwd):
-            res_data["error"] = "모든 값을 입력해야 합니다."
+           pass
+            
         else:
             user = Member(m_id = m_id, m_name=m_name ,m_pwd = m_pwd, m_email = m_email)
             user.save()
-        return redirect("/login")
+        return redirect("/login") # 가입 성공하면 로그인 페이지로 리다이렉트
 
 # 로그아웃
 def logout(request):
     if request.session.get('user'):
         del(request.session['user'])
     return redirect("/")
+
+# 아이디 중복확인 창 띄우기
+def checkpop(request):
+    if request.method == "GET": 
+        return render(request, "check.html")
+    
+    
+# 아이디 중복확인 후   
+def checkid(request):
+    #   useid = request.GET.get('idcheck')
+    result = []
+    
+    if request.method =="GET":
+        id = request.GET['idcheck']
+        # print(Member.objects.get(m_id=id))
+        # context =[]
+        # db 관련은 try except 사용하기    
+        try:
+            Member.objects.get(m_id=id)
+            print("중복됨")
+            dic = {'result':"true"}
+            result.append(dic)
+        
+        except Member.DoesNotExist:
+            print("중복없음")
+            dic = {'result':"fall"}
+            result.append(dic)
+
+    return HttpResponse(json.dumps(result), content_type="application/json")  
+   
+   
+    # return JsonResponse(context)
+          # if Member.objects.get(m_id=id):
+        #     print("중복됨")
+        #     dic = {'result':"true"}
+        #     result.append(dic)
+            
+        # else:
+        #     print("중복없음")
+        #     dic = {'result':"fall"}
+        #     result.append(dic)  
+            
+          #   중복이라면
+
+
 
 
 # Create your views here.
