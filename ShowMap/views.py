@@ -62,7 +62,7 @@ def uclid_process(data_merge,spot_data):
     #  * @create date 2023-06-16 09:42:16
     #  * @modify date 2023-06-16 09:42:16
     #  * @desc 거리 조정
-    result_data['자전거도로']=result_data['자전거도로']*1.15
+    result_data['자전거도로']=result_data['자전거도로']*1.10
     result_data['지하철역']=result_data['지하철역']*0.7
     result_data['공원']=result_data['공원']*0.55
     result_data['관광지']=result_data['관광지']*0.5
@@ -147,8 +147,9 @@ def jeju_analysis(request):
         df_result['관광지'] = result_data.apply(lambda row: convert(row['관광지'], row['관광지']), axis=1)
         df_result['대학'] = result_data.apply(lambda row: convert(row['대학'], row['대학']), axis=1)
         
+        #거리 점수 환산
         #print('공원',convert(0.03433583,0.03433583),'관광지',convert(0.07511377,0.07511377),'대학',convert(0.08019374,0.08019374))
-        #공원 5395.35 관광지 11802.97 대학 12601.21
+        #서울특별시 최대거리(m) : 공원 5395.35 관광지 11802.97 대학 12601.21
         
         df_result['자전거도로']=100-(df_result['자전거도로']/13400*100)
         df_result['지하철역']=100-(df_result['지하철역']/7500*100)
