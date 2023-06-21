@@ -1,5 +1,4 @@
-<!-- 2022.06.12
-{% comment %} 로그인 화면 {% endcomment %} -->
+{% comment %} 로그인 화면 {% endcomment %}
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -8,6 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>로그인 화면</title>
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <script defer src="{% static 'js/account.js' %}"></script>
     {% comment %} CSS연동 {% endcomment %}
     <link rel='stylesheet' type="text/css" href="{% static 'css/login.css' %}"/>
    
@@ -17,26 +18,28 @@
 {% comment %} 회원가입 {% endcomment %}
 <div class="container" id="container">
   <div class="form-container sign-up-container">
-    <form method="post" action="signup/" name="signup" id="signup">
+    <form method="post" action="signup/" id="signup" name="signup">
       {% csrf_token %}
       <h1> 회원가입 </h1>
-      <input type="text" placeholder="Id" id="account" name="account"/>
-      <input type="email" placeholder="Email" id="email" name="email" />
-      <input type="password" placeholder="Password" id="password" name="password"/>
-      <input type="text" placeholder="Name" id="username" name="username"/>
-      <button type="submit">가입하기</button>
+      <input type="text" placeholder="Id" id="account1" name="account"/>
+      <button id="check">아이디 중복검사</button>
+      <input type="email" placeholder="Email" id="email1" name="email" />
+      <input type="password" placeholder="Password" id="password1" name="password"/>
+      <input type="text" placeholder="Name" id="username1" name="username"/>
+      <button type="submit" id="signup2">가입하기</button>
     </form>
   </div>
 
-  {% comment %} 로그인 {% endcomment %}
+
+  {% comment %} 로그인 기능 {% endcomment %}
   <div class="form-container sign-in-container">
-    <form method="post" action="/login/" name="login" id='login'>
+    <form method="post" id='login' name="login"> 
       {% csrf_token %}
       <h1>로그인</h1>
-      <input type="text" placeholder="Id" id="account" name="account"/>
-      <input type="password" placeholder="Password" id="password" name="password"/>
-     
-      <button>로그인</button>
+      <span></span>
+      <input type="text" placeholder="Id" id="account2" name="account"/>
+      <input type="password" placeholder="Password" id="password2" name="password"/>
+      <button type="submit" id="buttonlogn">로그인</button>
     </form>
   </div>
 
@@ -56,66 +59,63 @@
     </div>
   </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="{% static 'js/account.js' %}"></script>
-<script src="text/javascript">
-    // 로그인 폼 제출에 대한 이벤트 핸들러 
- $(document).ready(function(){
-    $("form[name=signup]").submit(function(e){
-      event.preventDefault(); // form 제출기능 비활성화
+<script>
+$(document).ready(function(){
+  // 버튼 활성화 비활성화 기능 부여하기
+  function validateField(field,buttonElement) {
+    var value = field.val();
+    if (value === "") {
+      buttonElement.prop("disabled", true); // 버튼 비활성화
+    } else {
+      buttonElement.prop("disabled", false); // 버튼 활성화
+    }
+  }
 
-      // 폼 데이터 가져오기
-      var formData = $(this).serialize();
+  // 아이디 필드 검증
+  $("#account2").on("focusout", function() {
+    validateField($("#account2"), $("#buttonlogn"));
+  });
 
-      // AJAX 요청 보내기
-      $.ajax({
-        type: 'POST'
-        url:'/singup/'
-        data:formData
-        success: function(response){
-          // 성공하였을때 실행되는 코드이다.
-          console.log(response);
-        },
-        error: function(xhr, errmsg, err){
-          // 오류를 처리할 코드 
-          console.log(xhr.status + ": " + xhr.responseText);
-        }
-      });
-    });
-/* ---------------------------------------------------------------------------------*/
-    $("form[name=login]").submit(function(){
-      event.preventDefault(); // 원래의 로그인 submit 기능 방지함
-      
-      var formData = $(this).serialize(); // 기존의 form 데이터 가져오기
-      
-        // AJAX 요청 보내기
-        $.ajax({
-        type: 'POST'
-        url:'/login'
-        data:formData
-        success: function(response){
-          // 성공하였을때 실행되는 코드이다.
-          console.log(response);
-        },
-        error: function(xhr, errmsg, err){
-          // 오류를 처리할 코드 
-          console.log(xhr.status + ": " + xhr.responseText);
-        }
+  // 비밀번호 필드 검증
+  $("#password2").on("focusout", function() {
+    validateField($("#password2"), $("#buttonlogn"));
+  });
 
-      });
-    });
+  
+  
+  function validateField2(field, buttonElement2) {
+    var value2 = field.val();
+    if (value2 === "") {
+      buttonElement2.prop("disabled", true); // 버튼 비활성화
+    } else {
+      buttonElement2.prop("disabled", false); // 버튼 활성화
+    }
+  }
+  
+  $("#account1").click("focusout",function(){
+    validateField2($("#account1"),  $("#signup2"));
+  });
+  
+  
+  $("#email1").click("focusout",function(){
+    validateField2($("#email1"),  $("#signup2"));
+  });
+  
 
-      // 회원가입과 로그인 폼 사이의 전환 기능
-      $('#signIn').click(function() {
-      $('#container').removeClass("right-panel-active");
-    });
+  $("#password1").click("focusout",function(){
+    validateField2($("#password1"),  $("#signup2"));
+  });
 
-    $('#signUp').click(function() {
-      $('#container').addClass("right-panel-active");
-    });
-
-    });
-
+  
+  $("#check").click(function(){
+    event.preventDefault();
+    window.open("check","중복확인","width=400, height=300, top=20, center=50")
+    // url링크 부여
+    $("#checkid").val($("#account2").val());
+  })
+  
+  
+});
 </script>
 </body>
 </html>

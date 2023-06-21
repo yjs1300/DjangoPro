@@ -7,6 +7,7 @@ from folium.plugins import MarkerCluster
 import numpy as np
 import matplotlib.pyplot as plt
 
+
 # Create your views here.
 def index(request):
     return render(request,'index.html')
@@ -86,6 +87,7 @@ def charts(request):
     ).add_to(elec_district_geo_map)
 
     maps2 = elec_district_geo_map._repr_html_()
+
 #--------------------------------------------------------------------
 
     df = pd.read_csv('./rental.csv',encoding='cp949')
@@ -149,3 +151,4 @@ def charts(request):
     
 
     return render(request,"charts.html",{"maps1":maps1,"maps2":maps2,"maps3":maps3,"maps4":maps4})
+
