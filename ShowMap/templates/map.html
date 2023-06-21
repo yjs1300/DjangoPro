@@ -170,6 +170,24 @@
                     <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
                     <script>
 
+                    //지도에 표시된 마커 객체를 가지고 있을 배열입니다
+                    let markers2 = [];
+                    // 지도 위에 표시되고 있는 마커를 모두 제거합니다
+                    function removeMarker2() {
+                        for (var i = 0; i < markers2.length; i++) {
+                            markers2[i].setMap(null);
+                        }
+                        markers2 = [];
+
+                        document
+                        .getElementById('h_form')
+                        .reset()
+                        $('#juso_num1').empty()
+                        $('#juso_num2').empty()
+                        $('#juso_num3').empty()
+                    }
+
+                    $(document).ready(function(){
                         var mapContainer = document.getElementById('map'), // 지도를 표시할 div
                             mapOption = {
                                 center: new kakao
@@ -307,9 +325,6 @@
                             }
 
                             // ===========================================================================
-                            // 지도에 클릭 이벤트를 등록합니다 지도를 클릭하면 마지막 파라미터로 넘어온 함수를 호출합니다 지도에 표시된 마커 객체를 가지고 있을
-                            // 배열입니다
-                            let markers2 = [];
 
                             // 주소-좌표 변환 객체를 생성합니다
                             var geocoder = new kakao
@@ -320,16 +335,6 @@
                             function searchDetailAddrFromCoords(coords, callback) {
                                 // 좌표로 법정동 상세 주소 정보를 요청합니다
                                 geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
-                            }
-
-                            // 지도 위에 표시되고 있는 마커를 모두 제거합니다
-                            function removeMarker2() {
-                                for (var i = 0; i < markers2.length; i++) {
-                                    markers2[i].setMap(null);
-                                }
-                                markers2 = [];
-
-                                update_marker_info();
                             }
 
                             // 클릭으로 마커를 생성하고 지도위에 표시하는 함수입니다
@@ -433,6 +438,7 @@
                                     //위도 경도로 주소를 얻은 후 html에 구, 위도, 경도 표시
                                     update_marker_info();
                                 });
+                    });
                     </script>
                 </body>
             </html>

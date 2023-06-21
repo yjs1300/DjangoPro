@@ -11,4 +11,6 @@ urlpatterns = [
     path("cards",views.card),
     path("forgotpw",views.forgotpw),
     path("charts",views.charts),
+
+    path('chart_data', views.charts, name='chart_data'),
 ]

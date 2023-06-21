@@ -9,5 +9,5 @@ from django.urls import path
 from ShowStat import views
 
 urlpatterns = [
-    path("", views.showstat),
+    path("", views.showstat2),
 ]
