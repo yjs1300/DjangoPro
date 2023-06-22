@@ -4,11 +4,9 @@
     <head>
         <meta charset="utf-8">
         <title>bike - Map</title>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="{%static 'assets/favicon2.ico'%}" />
         <!-- Font Awesome icons (free version)-->
-        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
         <!-- Google fonts-->
         <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
         <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
@@ -31,9 +29,9 @@
             }
             .map_wrap {
                 position: relative;
-                top: 100px;
+                top: 94px;
                 width: 100%;
-                height: 450px;
+                height: 395px;
                 
             }
 
@@ -56,13 +54,8 @@
                 border: none;
             }
 
-            #rebtn{
-                position: relative;
-                top: 105px;
-                left: 93%;
-            }
-
-            #h_form{
+        
+            .col-lg-6{
                 position: relative;
                 top: 100px;
             }
@@ -87,373 +80,385 @@
                         {% endif %}
                         
                         {% if request.session.user%}
-                        <li class="nav-item"><a class="nav-link" href="/showchart/charts">분석</a></li>
                         <li class="nav-item"><a class="nav-link" href="/statistics/">통계</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/submap/submap">현황</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/report/report">보고서</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/showchart/charts">현황</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/myhist">결과이력</a></li>
                         {% endif %}
                     </ul>
                 </div>
             </div>
         </nav>
 
-
         <div class="map_wrap">
             <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
         </div>
-        <div id='rebtn'>
-        <button onclick="removeMarker2()" class="btn btn-warning btn-sm">마커 없애기</button>
-        </div>
-
-                    <form action='/showmap/analysis' method='post' id='h_form' > {% csrf_token %}
-                    <div class="row">
-                     <div class="w-50 p-3">
-                      <div class="col">
-                        <table class="table">
-                            <tr>
-                                <td>
-                                    <b><span id='juso_num1'  class="col-sm-5 col-form-label"></span></b>
-                                </td>
-                                <td>
-                                    <span class="col-sm-5">
-                                        <input type='text' id='juso1' name='juso1' size="40" readonly > <!--disabled 하면 안 넘어감-->
-                                        <input type='text' id='lat1' name='lat1' size="1" readonly>
-                                        <input type='text' id='lng1' name='lng1' size="1" readonly>
-                                    </span>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>
-                                    <b><span id='juso_num2' class="col-sm-5 col-form-label"></span></b>
-                                </td>
-                                <td>
-                                    <span class="col-sm-5">
-                                        <input type='text' id='juso2' name='juso2' size="40"  readonly>
-                                        <input type='text' id='lat2' name='lat2' size="1" readonly>
-                                        <input type='text' id='lng2' name='lng2' size="1" readonly>
-                                    </span>
-                                </td>
-                            </tr>
-                            
-                            <tr>
-                                <td>
-                                    <b><span id='juso_num3' class="col-sm-5 col-form-label"></span></b>
-                                </td>
-                                <td>
-                                    <span class="col-sm-5">
-                                        <input type='text' id='juso3' name='juso3' size="40"  readonly>
-                                        <input type='text' id='lat3' name='lat3' size="1" readonly>
-                                        <input type='text' id='lng3' name='lng3' size="1" readonly>
-                                    </span>
-                                </td>
-                            </tr>
-                        </table>
-                       </div>
-                     </div>
-
-                        <div class="col">
-                            <div class="position-absolute top-50 start-0">
-                            <input type='button' value='분석'  class="btn btn-warning btn-mi" onclick='formchk()'>
-                            </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        사용방법
+                    </div>
+                    <div class="card-body">
+                        <p>
+                            <small>지도에 표시된 노란 마커는 기존 대여소입니다.</small>
+                            <br>
+                            <ul>
+                                <li>대여소 설치를 원하는 위치에 마커 3개 까지 선택할 수 있습니다.</li>
+                                <li><button class="btn btn-secondary btn-mi">분석</button>을 눌러 선택된 대여소들의 분석결과를 띄워줍니다.</li>
+                                <li>다시 선택하고 싶으면 <button class="btn btn-secondary btn-mi">마커 없애기</button>를 누르거나 눌렀던 마커를 다시 누르면 지워집니다.</li>
+                            </ul>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <form action='/showmap/analysis' method='post' id='h_form'>{% csrf_token %}
+                        <input type="button" onclick="formchk()" value='분석'  class="btn btn-secondary btn-mi">
+                        <button type="button" onclick="removeMarker2()" class="btn btn-secondary btn-mi">마커 없애기</button>
+                    </div>
+                    <div class="card-body">
+                            <table class="table">
+                                <tr>
+                                    <td>
+                                        <b><span id='juso_num1'  class="col-sm-5 col-form-label"></span></b>
+                                    </td>
+                                    <td>
+                                        <span class="col-sm-5">
+                                            <input type='text' id='juso1' name='juso1' size="40" readonly > <!--disabled 하면 안 넘어감-->
+                                            <input type='text' id='lat1' name='lat1' size="1" readonly>
+                                            <input type='text' id='lng1' name='lng1' size="1" readonly>
+                                        </span>
+                                    </td>
+                                </tr>
+    
+                                <tr>
+                                    <td>
+                                        <b><span id='juso_num2' class="col-sm-5 col-form-label"></span></b>
+                                    </td>
+                                    <td>
+                                        <span class="col-sm-5">
+                                            <input type='text' id='juso2' name='juso2' size="40"  readonly>
+                                            <input type='text' id='lat2' name='lat2' size="1" readonly>
+                                            <input type='text' id='lng2' name='lng2' size="1" readonly>
+                                        </span>
+                                    </td>
+                                </tr>
+                                
+                                <tr>
+                                    <td>
+                                        <b><span id='juso_num3' class="col-sm-5 col-form-label"></span></b>
+                                    </td>
+                                    <td>
+                                        <span class="col-sm-5">
+                                            <input type='text' id='juso3' name='juso3' size="40"  readonly>
+                                            <input type='text' id='lat3' name='lat3' size="1" readonly>
+                                            <input type='text' id='lng3' name='lng3' size="1" readonly>
+                                        </span>
+                                    </td>
+                                </tr>
+                            </table>
                         </div>
                     </form>
-                
+                </div>
+            </div>
+        </div>
+        <script
+            type="text/javascript"
+            src="//dapi.kakao.com/v2/maps/sdk.js?appkey=594a25514f075013c23bd3bf65936508&libraries=services">
+        </script>
+        <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+        <script>
 
-                    <script
-                        type="text/javascript"
-                        src="//dapi.kakao.com/v2/maps/sdk.js?appkey=594a25514f075013c23bd3bf65936508&libraries=services"></script>
-                    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-                    <script>
 
-                    function formchk() {
-                        let form = document.getElementById("h_form");
-                        let text1 = document.getElementById("lat1");
-                        let isEmpty = false;
-                        
-                        if (text1.value.trim() === "") {
-                            isEmpty = true;
-                        }
+        //지도에 표시된 마커 객체를 가지고 있을 배열입니다
+        let markers2 = [];
+        // 지도 위에 표시되고 있는 마커를 모두 제거합니다
+        function removeMarker2() {
+            for (var i = 0; i < markers2.length; i++) {
+                markers2[i].setMap(null);
+            }
+            markers2 = [];
 
-                        if (isEmpty) {
+            document
+            .getElementById('h_form')
+            .reset()
+            $('#juso_num1').empty()
+            $('#juso_num2').empty()
+            $('#juso_num3').empty()
+        }
 
-                            $('#juso1').css("color", "red");
-                            $('#juso1').val('위치를 선택해주세요')
-                        } else {
-                            form.submit();
-                        }
+        function formchk() {
+            let form = document.getElementById("h_form");
+            let text1 = document.getElementById("lat1");
+            let isEmpty = false;
+            
+            if (text1.value.trim() === "") {
+                isEmpty = true;
+            }
+
+            if (isEmpty) {
+                $('#juso1').css("color", "red");
+                $('#juso1').val('위치를 선택해주세요')
+            } else {
+                form.submit();
+            }
+        }
+
+        $(document).ready(function(){
+            var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+                mapOption = {
+                    center: new kakao
+                        .maps
+                        .LatLng(33.384132, 126.542207), // 지도의 중심좌표 
+                    level: 10 // 지도의 확대 레벨
+                };
+
+            // 지도를 생성합니다
+            var map = new kakao
+                .maps
+                .Map(mapContainer, mapOption);
+
+            // 지도에 확대 축소 컨트롤을 생성한다
+            var zoomControl = new kakao
+                .maps
+                .ZoomControl();
+
+            // 지도의 우측에 확대 축소 컨트롤을 추가한다
+            map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+
+            // 자전거 대여소 표시------------------------------------------------------ 마커를 클릭하면
+            // 장소명을 표출할 인포윈도우 입니다
+            var infowindow = new kakao
+                .maps
+                .InfoWindow({zIndex: 1});
+
+            // 장소 검색 객체를 생성합니다
+            var ps = new kakao
+                .maps
+                .services
+                .Places();
+
+            // 키워드로 장소를 검색합니다
+            ps.keywordSearch('제주도 자전거 대여소', placesSearchCB); //size=45 제한 변경되서 안됨
+
+            // 키워드 검색 완료 시 호출되는 콜백함수 입니다
+            function placesSearchCB(data, status, pagination) {
+                if (status === kakao.maps.services.Status.OK) {
+
+                    // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해 LatLngBounds 객체에 좌표를 추가합니다 var bounds = new
+                    // kakao.maps.LatLngBounds();
+
+                    /*for (var i=0; i<data.length; i++) {
+                        displayMarker(data[i]);
+                        //bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
+                    } */
+
+                    // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다 map.setBounds(bounds); 정상적으로 검색이 완료됐으면 검색 목록과
+                    // 마커를 표출합니다
+                    displayPlaces(data);
+
+                    // 모든 페이지를 가져왔는지 확인
+                    if (pagination.hasNextPage) {
+                        // 다음 페이지로 이동하여 검색 결과를 가져옴
+                        pagination.nextPage();
+                    } 
+                }
+
+            }
+
+            let search_res;
+
+            // 검색 결과 목록과 마커를 표출하는 함수입니다 검색 결과 목록과 마커를 표출하는 함수입니다
+            function displayPlaces(places) {
+
+                search_res = places; //markers
+
+                // 지도에 표시되고 있는 마커를 제거합니다 removeMarker();
+
+                for (var i = 0; i < places.length; i++) {
+
+                    // 마커를 생성하고 지도에 표시합니다
+                    var placePosition = new kakao
+                        .maps
+                        .LatLng(places[i].y, places[i].x)
+                    marker = addMarker(placePosition, i);
+                    // itemEl = getListItem(i, places[i]);  검색 결과 항목 Element를 생성합니다 검색된 장소 위치를 기준으로
+                    // 지도 범위를 재설정하기위해 LatLngBounds 객체에 좌표를 추가합니다 bounds.extend(placePosition); 마커와
+                    // 검색결과 항목에 mouseover 했을때 해당 장소에 인포윈도우에 장소명을 표시합니다 mouseout 했을 때는 인포윈도우를 닫습니다
+                    (function (marker, title) {
+                        kakao
+                            .maps
+                            .event
+                            .addListener(marker, 'mouseover', function () {
+                                displayInfowindow(marker, title);
+                            });
+
+                        kakao
+                            .maps
+                            .event
+                            .addListener(marker, 'mouseout', function () {
+                                infowindow.close();
+                            });
+
+                    })(marker, places[i].place_name);
+
+                    //fragment.appendChild(itemEl);
+                }
+
+                // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다 map.setBounds(bounds);
+            }
+
+            // 인포윈도우에 장소명을 표시합니다
+            function displayInfowindow(marker, title) {
+                var content = '<div style="padding:5px;z-index:1;">' + title + '</div>';
+
+                infowindow.setContent(content);
+                infowindow.open(map, marker);
+            }
+
+            // 마커를 담을 배열입니다
+            let markers = [];
+
+            // 마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
+            function addMarker(position, idx, title) {
+                var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png'
+                    imageSize = new kakao
+                        .maps
+                        .Size(24, 35),
+                    markerImage = new kakao
+                        .maps
+                        .MarkerImage(imageSrc, imageSize),
+                    marker = new kakao
+                        .maps
+                        .Marker({
+                            position: position, // 마커의 위치
+                            image: markerImage
+                        });
+
+                    marker.setMap(map); // 지도 위에 마커를 표출합니다
+                    markers.push(marker); // 배열에 생성된 마커를 추가합니다
+
+                    return marker;
+                }
+
+                // ===========================================================================
+
+                // 주소-좌표 변환 객체를 생성합니다
+                var geocoder = new kakao
+                    .maps
+                    .services
+                    .Geocoder();
+
+                function searchDetailAddrFromCoords(coords, callback) {
+                    // 좌표로 법정동 상세 주소 정보를 요청합니다
+                    geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
+                }
+
+                // 클릭으로 마커를 생성하고 지도위에 표시하는 함수입니다
+                function addMarker2(position) {
+
+                    // 마커를 생성합니다
+                    var marker2 = new kakao
+                        .maps
+                        .Marker({position: position});
+
+                    // 마커가 지도 위에 표시되도록 설정합니다
+                    marker2.setMap(map);
+
+                    // 생성된 마커를 배열에 추가합니다
+                    markers2.push(marker2);
+
+                    // 마커 클릭 이벤트 등록
+                    kakao
+                        .maps
+                        .event
+                        .addListener(marker2, 'click', function () {
+                            handleMarkerClick(marker2);
+                        });
+                }
+
+                // 배열에 추가된 마커들을 지도에 표시하거나 삭제하는 함수입니다
+                function setMarkers(map) {
+                    for (var i = 0; i < markers2.length; i++) {
+                        markers2[i].setMap(map);
                     }
+                }
 
-                    //지도에 표시된 마커 객체를 가지고 있을 배열입니다
-                    let markers2 = [];
-                    // 지도 위에 표시되고 있는 마커를 모두 제거합니다
-                    function removeMarker2() {
-                        for (var i = 0; i < markers2.length; i++) {
-                            markers2[i].setMap(null);
-                        }
-                        markers2 = [];
-
-                        document
+                //마커의 주소 얻은 후 구,위도,경도 html hidden tag에 추가
+                function update_marker_info() {
+                    $('#juso1').css("color", "black");
+                    document
                         .getElementById('h_form')
                         .reset()
-                        $('#juso_num1').empty()
-                        $('#juso_num2').empty()
-                        $('#juso_num3').empty()
-                    }
+                    $('#juso_num1').empty()
+                    $('#juso_num2').empty()
+                    $('#juso_num3').empty()
 
-                    $(document).ready(function(){
-                        var mapContainer = document.getElementById('map'), // 지도를 표시할 div
-                            mapOption = {
-                                center: new kakao
-                                    .maps
-                                    .LatLng(33.384132, 126.542207), // 지도의 중심좌표 
-                                level: 10 // 지도의 확대 레벨
-                            };
+                    //각 마커가 가진 위치
+                    for (let i = 0; i < markers2.length; i++) {
+                        let latlng = markers2[i].getPosition(); // Marker의 위치 정보 가져오기
+                        let lat = latlng.getLat(); // Marker의 위도 값 가져오기
+                        let lng = latlng.getLng(); // Marker의 경도 값 가져오기
 
-                        // 지도를 생성합니다
-                        var map = new kakao
-                            .maps
-                            .Map(mapContainer, mapOption);
+                        //위도로 주소 찾기
+                        searchDetailAddrFromCoords(latlng, function (result, status) {
 
-                        // 지도에 확대 축소 컨트롤을 생성한다
-                        var zoomControl = new kakao
-                            .maps
-                            .ZoomControl();
-
-                        // 지도의 우측에 확대 축소 컨트롤을 추가한다
-                        map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
-
-                        // 자전거 대여소 표시------------------------------------------------------ 마커를 클릭하면
-                        // 장소명을 표출할 인포윈도우 입니다
-                        var infowindow = new kakao
-                            .maps
-                            .InfoWindow({zIndex: 1});
-
-                        // 장소 검색 객체를 생성합니다
-                        var ps = new kakao
-                            .maps
-                            .services
-                            .Places();
-
-                        // 키워드로 장소를 검색합니다
-                        ps.keywordSearch('제주도 자전거 대여소', placesSearchCB); //size=45 제한 변경되서 안됨
-
-                        // 키워드 검색 완료 시 호출되는 콜백함수 입니다
-                        function placesSearchCB(data, status, pagination) {
                             if (status === kakao.maps.services.Status.OK) {
+                                // var detailAddr = !!result[0].road_address ? '<div>도로명주소 : ' +
+                                // result[0].road_address.address_name + '</div>' : ''; detailAddr += '<div>지번
+                                // 주소 : ' + result[0].address.address_name + '</div>';
+                                let detailAddr = result[0].address.address_name;
 
-                                // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해 LatLngBounds 객체에 좌표를 추가합니다 var bounds = new
-                                // kakao.maps.LatLngBounds();
+                                //html 삽입 detailAddr = detailAddr.split(" ")[2]
+                                let imsi = i + 1
 
-                                /*for (var i=0; i<data.length; i++) {
-                                    displayMarker(data[i]);
-                                    //bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
-                                } */
+                                $('#juso_num' + imsi).text(imsi)
 
-                                // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다 map.setBounds(bounds); 정상적으로 검색이 완료됐으면 검색 목록과
-                                // 마커를 표출합니다
-                                displayPlaces(data);
-
-                                // 모든 페이지를 가져왔는지 확인
-                                if (pagination.hasNextPage) {
-                                    // 다음 페이지로 이동하여 검색 결과를 가져옴
-                                    pagination.nextPage();
-                                } 
+                                //console.log(imsi)
+                                $("#juso" + imsi).val(detailAddr);
+                                $("#lat" + imsi).val(lat);
+                                $("#lng" + imsi).val(lng);
                             }
+                        })
+                    }
+                }
 
+                // 마커 클릭 이벤트 처리
+                function handleMarkerClick(marker2) {
+                    // 클릭된 마커 제거
+                    marker2.setMap(null);
+
+                    // 배열에서 제거
+                    var index = markers2.indexOf(marker2);
+                    if (index !== -1) { // indexOf()는 특정 요소의 인덱스를 찾지 못할 경우 -1을 반환
+                        markers2.splice(index, 1); //배열에서 특정 인덱스의 요소를 제거 (인덱스, 개수)
+                    }
+                    update_marker_info();
+                }
+
+                kakao
+                    .maps
+                    .event
+                    .addListener(map, 'click', function (mouseEvent) {
+
+                        // 클릭한 위도, 경도 정보를 가져옵니다
+                        var latlng = mouseEvent.latLng;
+
+                        if (markers2.length < 3) {
+                            // 클릭한 위치에 마커를 표시합니다
+                            addMarker2(mouseEvent.latLng);
                         }
 
-                        let search_res;
+                        //확인용
+                        let message = '클릭한 위치의 위도는 ' + latlng.getLat() + ' 이고, ';
+                        message += '경도는 ' + latlng.getLng() + ' 입니다<p>';
 
-                        // 검색 결과 목록과 마커를 표출하는 함수입니다 검색 결과 목록과 마커를 표출하는 함수입니다
-                        function displayPlaces(places) {
-
-                            search_res = places; //markers
-
-                            // 지도에 표시되고 있는 마커를 제거합니다 removeMarker();
-
-                            for (var i = 0; i < places.length; i++) {
-
-                                // 마커를 생성하고 지도에 표시합니다
-                                var placePosition = new kakao
-                                    .maps
-                                    .LatLng(places[i].y, places[i].x)
-                                marker = addMarker(placePosition, i);
-                                // itemEl = getListItem(i, places[i]);  검색 결과 항목 Element를 생성합니다 검색된 장소 위치를 기준으로
-                                // 지도 범위를 재설정하기위해 LatLngBounds 객체에 좌표를 추가합니다 bounds.extend(placePosition); 마커와
-                                // 검색결과 항목에 mouseover 했을때 해당 장소에 인포윈도우에 장소명을 표시합니다 mouseout 했을 때는 인포윈도우를 닫습니다
-                                (function (marker, title) {
-                                    kakao
-                                        .maps
-                                        .event
-                                        .addListener(marker, 'mouseover', function () {
-                                            displayInfowindow(marker, title);
-                                        });
-
-                                    kakao
-                                        .maps
-                                        .event
-                                        .addListener(marker, 'mouseout', function () {
-                                            infowindow.close();
-                                        });
-
-                                })(marker, places[i].place_name);
-
-                                //fragment.appendChild(itemEl);
-                            }
-
-                            // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다 map.setBounds(bounds);
-                        }
-
-                        // 인포윈도우에 장소명을 표시합니다
-                        function displayInfowindow(marker, title) {
-                            var content = '<div style="padding:5px;z-index:1;">' + title + '</div>';
-
-                            infowindow.setContent(content);
-                            infowindow.open(map, marker);
-                        }
-
-                        // 마커를 담을 배열입니다
-                        let markers = [];
-
-                        // 마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
-                        function addMarker(position, idx, title) {
-                            var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png'
-                                imageSize = new kakao
-                                    .maps
-                                    .Size(24, 35),
-                                markerImage = new kakao
-                                    .maps
-                                    .MarkerImage(imageSrc, imageSize),
-                                marker = new kakao
-                                    .maps
-                                    .Marker({
-                                        position: position, // 마커의 위치
-                                        image: markerImage
-                                    });
-
-                                marker.setMap(map); // 지도 위에 마커를 표출합니다
-                                markers.push(marker); // 배열에 생성된 마커를 추가합니다
-
-                                return marker;
-                            }
-
-                            // ===========================================================================
-
-                            // 주소-좌표 변환 객체를 생성합니다
-                            var geocoder = new kakao
-                                .maps
-                                .services
-                                .Geocoder();
-
-                            function searchDetailAddrFromCoords(coords, callback) {
-                                // 좌표로 법정동 상세 주소 정보를 요청합니다
-                                geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
-                            }
-
-                            // 클릭으로 마커를 생성하고 지도위에 표시하는 함수입니다
-                            function addMarker2(position) {
-
-                                // 마커를 생성합니다
-                                var marker2 = new kakao
-                                    .maps
-                                    .Marker({position: position});
-
-                                // 마커가 지도 위에 표시되도록 설정합니다
-                                marker2.setMap(map);
-
-                                // 생성된 마커를 배열에 추가합니다
-                                markers2.push(marker2);
-
-                                // 마커 클릭 이벤트 등록
-                                kakao
-                                    .maps
-                                    .event
-                                    .addListener(marker2, 'click', function () {
-                                        handleMarkerClick(marker2);
-                                    });
-                            }
-
-                            // 배열에 추가된 마커들을 지도에 표시하거나 삭제하는 함수입니다
-                            function setMarkers(map) {
-                                for (var i = 0; i < markers2.length; i++) {
-                                    markers2[i].setMap(map);
-                                }
-                            }
-
-                            //마커의 주소 얻은 후 구,위도,경도 html hidden tag에 추가
-                            function update_marker_info() {
-                                $('#juso1').css("color", "black");
-                                document
-                                    .getElementById('h_form')
-                                    .reset()
-                                $('#juso_num1').empty()
-                                $('#juso_num2').empty()
-                                $('#juso_num3').empty()
-
-                                //각 마커가 가진 위치
-                                for (let i = 0; i < markers2.length; i++) {
-                                    let latlng = markers2[i].getPosition(); // Marker의 위치 정보 가져오기
-                                    let lat = latlng.getLat(); // Marker의 위도 값 가져오기
-                                    let lng = latlng.getLng(); // Marker의 경도 값 가져오기
-
-                                    //위도로 주소 찾기
-                                    searchDetailAddrFromCoords(latlng, function (result, status) {
-
-                                        if (status === kakao.maps.services.Status.OK) {
-                                            // var detailAddr = !!result[0].road_address ? '<div>도로명주소 : ' +
-                                            // result[0].road_address.address_name + '</div>' : ''; detailAddr += '<div>지번
-                                            // 주소 : ' + result[0].address.address_name + '</div>';
-                                            let detailAddr = result[0].address.address_name;
-
-                                            //html 삽입 detailAddr = detailAddr.split(" ")[2]
-                                            let imsi = i + 1
-
-                                            $('#juso_num' + imsi).text(imsi)
-
-                                            //console.log(imsi)
-                                            $("#juso" + imsi).val(detailAddr);
-                                            $("#lat" + imsi).val(lat);
-                                            $("#lng" + imsi).val(lng);
-                                        }
-                                    })
-                                }
-                            }
-
-                            // 마커 클릭 이벤트 처리
-                            function handleMarkerClick(marker2) {
-                                // 클릭된 마커 제거
-                                marker2.setMap(null);
-
-                                // 배열에서 제거
-                                var index = markers2.indexOf(marker2);
-                                if (index !== -1) { // indexOf()는 특정 요소의 인덱스를 찾지 못할 경우 -1을 반환
-                                    markers2.splice(index, 1); //배열에서 특정 인덱스의 요소를 제거 (인덱스, 개수)
-                                }
-                                update_marker_info();
-                            }
-
-                            kakao
-                                .maps
-                                .event
-                                .addListener(map, 'click', function (mouseEvent) {
-
-                                    // 클릭한 위도, 경도 정보를 가져옵니다
-                                    var latlng = mouseEvent.latLng;
-
-                                    if (markers2.length < 3) {
-                                        // 클릭한 위치에 마커를 표시합니다
-                                        addMarker2(mouseEvent.latLng);
-                                    }
-
-                                    //확인용
-                                    let message = '클릭한 위치의 위도는 ' + latlng.getLat() + ' 이고, ';
-                                    message += '경도는 ' + latlng.getLng() + ' 입니다<p>';
-
-                                    //위도 경도로 주소를 얻은 후 html에 구, 위도, 경도 표시
-                                    update_marker_info();
-                                });
+                        //위도 경도로 주소를 얻은 후 html에 구, 위도, 경도 표시
+                        update_marker_info();
                     });
-                    </script>
-                </body>
-            </html>
+        });
+        </script>
+    </body>
+</html>

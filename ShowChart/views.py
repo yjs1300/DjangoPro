@@ -21,6 +21,7 @@ def card(request):
     return render(request,"cards.html")
 def forgotpw(request):
     return render(request,"forgot-password.html")
+
 def charts(request):
     
     df = pd.read_excel("./rental3.xlsx")
@@ -42,8 +43,8 @@ def charts(request):
     for feature in geo['features']:
         code = feature['properties']['code']
         name = feature['properties']['name']
-        print(code) 
-        print(name)
+        # print(code) 
+        # print(name)
         f.close()
 
     folium.Choropleth(
