@@ -43,6 +43,7 @@
       <button type="submit" id="buttonlogn">로그인</button>
     </form>
   </div>
+  
 
   {% comment %} 화면전환기능 구현파트 {% endcomment %}
   <div class="overlay-container">
@@ -51,11 +52,15 @@
         <h1>어서오세요</h1>
         <p>로그인을 진행해주세요</p>
         <button class="ghost" id="signIn">로그인</button>
+        <br>
+        <button class="home">홈으로</button>
       </div>
       <div class="overlay-panel overlay-right">
         <h1>반가워요!</h1>
         <p>정보를 입력해주세요!</p>
         <button class="ghost" id="signUp">회원가입</button>
+        <br>
+        <button class="home">홈으로</button>
       </div>
     </div>
   </div>
@@ -108,6 +113,8 @@ $(document).ready(function(){
   });
   
   //===========================================================
+  
+  
   $("#checkiddouble").click(function(){
     event.preventDefault();
     window.open("check","중복확인","width=400, height=300, top=20, center=50")
@@ -115,6 +122,7 @@ $(document).ready(function(){
     $("#checkid").val($("#account2").val());
   })
 
+  
   // 이메일 형식 체크 정규식
   // change 사용
   $("#email1").on("change",function(){
@@ -131,6 +139,11 @@ $(document).ready(function(){
       $("#email_check").html("유효하지 않습니다");
     }
   })
+ //===================================================
+  $(".home").on("click",function(){
+       location.href = "/";
+  });
+
 });
 </script>
 </body>

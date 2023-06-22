@@ -16,26 +16,29 @@ def login(request):
     elif request.method == "POST":
         m_id = request.POST.get('account')
         m_pwd = request.POST.get('password')
-        errMsg = {}
-        context= {}
         
-        if not (m_id and m_pwd):
-            errMsg["err"] = "모든 값을 입력하세요"
+        M_check = Member.objects.filter(m_id=m_id)
+        P_check = Member.objects.filter(m_pwd=m_pwd)
+        
+        # 오류 
+        if M_check.count() == 0 or P_check.count() == 0:
+            return render(request,"error.html") 
             
+            
+        
         else:
             user = Member.objects.get(m_id=m_id)
-            print('m_pwd :', m_pwd)
-            print('user.m_pwd :', user.m_pwd)
+            # print('m_pwd :', m_pwd)
+            # print('user.m_pwd :', user.m_pwd)
             if (m_pwd == user.m_pwd ):
                 request.session['user'] = user.m_id
                 
                 print('로그인 성공')
                 return redirect('/') # 로그인 성공시 홈으로 이동함.
             else:
-                errMsg['error'] = "비밀번호를 입력하세요"
                 print('로그인 실패')
-        print('ㅎㅎㅎㅎㅎㅎ')
-        return render(request, "login.html", errMsg)
+       
+        return render(request, "login.html",)
                  
                    
                  

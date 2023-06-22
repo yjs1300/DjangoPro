@@ -19,5 +19,7 @@ urlpatterns = [
   
   # 아이디 중복확인을 진행함.
   path("check/checkid",views.checkid),
+  
+  
 
 ]
