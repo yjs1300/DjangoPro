@@ -51,7 +51,9 @@
                 <br><br><br><br><br><br>
                 {% comment %} <div class="masthead-subheading"></div>
                 <div class="masthead-heading text-uppercase"></div> {% endcomment %}
+                {% if request.session.user%}
                 <a class="btn btn-primary btn-xl text-uppercase" href="showmap/map">Show map</a>
+                {% endif %}
             </div>
         </header>
         <!-- Services-->
@@ -120,10 +122,10 @@
                                 <div class="portfolio-hover">
                                     <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
                                 </div>
-                                <img class="rounded mx-auto d-block" src="{%static 'assets/img/Icon/eclipse.jpg' %}" alt="..." />
+                                <img class="rounded mx-auto d-block" src="{%static 'assets/img/Icon/vscode.png' %}" alt="..." />
                             </a>
                             <div class="portfolio-caption">
-                                <div class="portfolio-caption-heading">Eclipse</div>
+                                <div class="portfolio-caption-heading">VS_code</div>
                                 <div class="portfolio-caption-subheading text-muted">Develope tool</div>
                             </div>
                         </div>
@@ -180,11 +182,11 @@
                                 <div class="portfolio-hover">
                                     <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
                                 </div>
-                                <img class="img-rounded mx-auto d-block" src="{%static 'assets/img/Icon/bootstarp.jpg'%}" style="center" alt="..." />
+                                <img class="img-rounded mx-auto d-block" src="{%static 'assets/img/Icon/그림1.png'%}" style="center" alt="..." />
                             </a>
                             <div class="portfolio-caption">
-                                <div class="portfolio-caption-heading">bootstarp</div>
-                                <div class="portfolio-caption-subheading text-muted">Front-end Design</div>
+                                <div class="portfolio-caption-heading">scikit learn</div>
+                                <div class="portfolio-caption-subheading text-muted">machine learning</div>
                             </div>
                         </div>
                     </div>
