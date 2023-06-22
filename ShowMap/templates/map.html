@@ -98,7 +98,7 @@
                 <form action='/showmap/analysis' method='post' id='h_form' > {% csrf_token %}
                 <div class="card mb-4">
                     <div class="card-header">
-                        <input type='submit' value='분석'  class="btn btn-secondary btn-mi">
+                        <input type="button" onclick="formchk()" value='분석'  class="btn btn-secondary btn-mi">
                         <button type="button" onclick="removeMarker2()" class="btn btn-secondary btn-mi">마커 없애기</button>
                     </div>
                     <div class="card-body">
@@ -164,6 +164,7 @@
         <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
         <script>
 
+
         //지도에 표시된 마커 객체를 가지고 있을 배열입니다
         let markers2 = [];
         // 지도 위에 표시되고 있는 마커를 모두 제거합니다
@@ -179,6 +180,23 @@
             $('#juso_num1').empty()
             $('#juso_num2').empty()
             $('#juso_num3').empty()
+        }
+
+        function formchk() {
+            let form = document.getElementById("h_form");
+            let text1 = document.getElementById("lat1");
+            let isEmpty = false;
+            
+            if (text1.value.trim() === "") {
+                isEmpty = true;
+            }
+
+            if (isEmpty) {
+                $('#juso1').css("color", "red");
+                $('#juso1').val('위치를 선택해주세요')
+            } else {
+                form.submit();
+            }
         }
 
         $(document).ready(function(){
@@ -363,28 +381,28 @@
 
                 //마커의 주소 얻은 후 구,위도,경도 html hidden tag에 추가
                 function update_marker_info() {
+                    $('#juso1').css("color", "black");
                     document
                         .getElementById('h_form')
                         .reset()
                     $('#juso_num1').empty()
                     $('#juso_num2').empty()
                     $('#juso_num3').empty()
-                
-        
-            //각 마커가 가진 위치
-            for (let i = 0; i < markers2.length; i++) {
-                let latlng = markers2[i].getPosition(); // Marker의 위치 정보 가져오기
-                let lat = latlng.getLat(); // Marker의 위도 값 가져오기
-                let lng = latlng.getLng(); // Marker의 경도 값 가져오기
-            
-            //위도로 주소 찾기
-            searchDetailAddrFromCoords(latlng, function (result, status) {
-                
-                if (status === kakao.maps.services.Status.OK) {
-                    // var detailAddr = !!result[0].road_address ? '<div>도로명주소 : ' +
-                        // result[0].road_address.address_name + '</div>' : ''; detailAddr += '<div>지번
-                            // 주소 : ' + result[0].address.address_name + '</div>';
-                            let detailAddr = result[0].address.address_name;
+
+                    //각 마커가 가진 위치
+                    for (let i = 0; i < markers2.length; i++) {
+                        let latlng = markers2[i].getPosition(); // Marker의 위치 정보 가져오기
+                        let lat = latlng.getLat(); // Marker의 위도 값 가져오기
+                        let lng = latlng.getLng(); // Marker의 경도 값 가져오기
+
+                        //위도로 주소 찾기
+                        searchDetailAddrFromCoords(latlng, function (result, status) {
+
+                            if (status === kakao.maps.services.Status.OK) {
+                                // var detailAddr = !!result[0].road_address ? '<div>도로명주소 : ' +
+                                // result[0].road_address.address_name + '</div>' : ''; detailAddr += '<div>지번
+                                // 주소 : ' + result[0].address.address_name + '</div>';
+                                let detailAddr = result[0].address.address_name;
 
                                 //html 삽입 detailAddr = detailAddr.split(" ")[2]
                                 let imsi = i + 1
@@ -433,7 +451,7 @@
                         //위도 경도로 주소를 얻은 후 html에 구, 위도, 경도 표시
                         update_marker_info();
                     });
-            });
+        });
         </script>
     </body>
 </html>
