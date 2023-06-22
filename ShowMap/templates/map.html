@@ -55,7 +55,7 @@
             }
 
         
-            #h_form{
+            .col-lg-6{
                 position: relative;
                 top: 100px;
             }
@@ -94,65 +94,73 @@
         </div>
         <div class="row">
             <div class="col-lg-6">
-                <form action='/showmap/analysis' method='post' id='h_form' > {% csrf_token %}
                 <div class="card mb-4">
-                    <div class="card-header">
-                        <input type="button" onclick="formchk()" value='분석'  class="btn btn-secondary btn-mi">
-                        <button type="button" onclick="removeMarker2()" class="btn btn-secondary btn-mi">마커 없애기</button>
-                    </div>
-                    <div class="card-body">
-                        <table class="table">
-                            <tr>
-                                <td>
-                                    <b><span id='juso_num1'  class="col-sm-5 col-form-label"></span></b>
-                                </td>
-                                <td>
-                                    <span class="col-sm-5">
-                                        <input type='text' id='juso1' name='juso1' size="40" readonly > <!--disabled 하면 안 넘어감-->
-                                        <input type='text' id='lat1' name='lat1' size="1" readonly>
-                                        <input type='text' id='lng1' name='lng1' size="1" readonly>
-                                    </span>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>
-                                    <b><span id='juso_num2' class="col-sm-5 col-form-label"></span></b>
-                                </td>
-                                <td>
-                                    <span class="col-sm-5">
-                                        <input type='text' id='juso2' name='juso2' size="40"  readonly>
-                                        <input type='text' id='lat2' name='lat2' size="1" readonly>
-                                        <input type='text' id='lng2' name='lng2' size="1" readonly>
-                                    </span>
-                                </td>
-                            </tr>
-                            
-                            <tr>
-                                <td>
-                                    <b><span id='juso_num3' class="col-sm-5 col-form-label"></span></b>
-                                </td>
-                                <td>
-                                    <span class="col-sm-5">
-                                        <input type='text' id='juso3' name='juso3' size="40"  readonly>
-                                        <input type='text' id='lat3' name='lat3' size="1" readonly>
-                                        <input type='text' id='lng3' name='lng3' size="1" readonly>
-                                    </span>
-                                </td>
-                            </tr>
-                        </table> 
-                    </div>
-                </form>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="card mb-4" id='h_form'>
                     <div class="card-header">
                         사용방법
                     </div>
                     <div class="card-body">
-                        지도에 마커를 찍고 분석을 통해 대여소 위치가 적합한지 판단한다.
+                        <p>
+                            <small>지도에 표시된 노란 마커는 기존 대여소입니다.</small>
+                            <br>
+                            <ul>
+                                <li>대여소 설치를 원하는 위치에 마커 3개 까지 선택할 수 있습니다.</li>
+                                <li><button class="btn btn-secondary btn-mi">분석</button>을 눌러 선택된 대여소들의 분석결과를 띄워줍니다.</li>
+                                <li>다시 선택하고 싶으면 <button class="btn btn-secondary btn-mi">마커 없애기</button>를 누르거나 눌렀던 마커를 다시 누르면 지워집니다.</li>
+                            </ul>
+                        </p>
                     </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <form action='/showmap/analysis' method='post' id='h_form'>{% csrf_token %}
+                        <input type="button" onclick="formchk()" value='분석'  class="btn btn-secondary btn-mi">
+                        <button type="button" onclick="removeMarker2()" class="btn btn-secondary btn-mi">마커 없애기</button>
+                    </div>
+                    <div class="card-body">
+                            <table class="table">
+                                <tr>
+                                    <td>
+                                        <b><span id='juso_num1'  class="col-sm-5 col-form-label"></span></b>
+                                    </td>
+                                    <td>
+                                        <span class="col-sm-5">
+                                            <input type='text' id='juso1' name='juso1' size="40" readonly > <!--disabled 하면 안 넘어감-->
+                                            <input type='text' id='lat1' name='lat1' size="1" readonly>
+                                            <input type='text' id='lng1' name='lng1' size="1" readonly>
+                                        </span>
+                                    </td>
+                                </tr>
+    
+                                <tr>
+                                    <td>
+                                        <b><span id='juso_num2' class="col-sm-5 col-form-label"></span></b>
+                                    </td>
+                                    <td>
+                                        <span class="col-sm-5">
+                                            <input type='text' id='juso2' name='juso2' size="40"  readonly>
+                                            <input type='text' id='lat2' name='lat2' size="1" readonly>
+                                            <input type='text' id='lng2' name='lng2' size="1" readonly>
+                                        </span>
+                                    </td>
+                                </tr>
+                                
+                                <tr>
+                                    <td>
+                                        <b><span id='juso_num3' class="col-sm-5 col-form-label"></span></b>
+                                    </td>
+                                    <td>
+                                        <span class="col-sm-5">
+                                            <input type='text' id='juso3' name='juso3' size="40"  readonly>
+                                            <input type='text' id='lat3' name='lat3' size="1" readonly>
+                                            <input type='text' id='lng3' name='lng3' size="1" readonly>
+                                        </span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
