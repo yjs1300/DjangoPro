@@ -126,10 +126,10 @@
                                     <tbody id="dataShow"></tbody>
                                 </table>
                             </div>
-
+                            
                             <!-- 페이징처리 -->
                             <div id="pageShow" style="text-align: center;"></div>
-
+                            
                         </div>
                     </div>
                 </div>
@@ -155,8 +155,6 @@
                                         <canvas id="myBarChart"></canvas>
                                     </div>
                                     <hr>
-                                    Styling for the bar chart can be found in the
-                                    <code>/js/demo/chart-bar-demo.js</code> file.
                                 </div>
                             </div>
                         </div>
@@ -172,8 +170,6 @@
                                         <canvas id="myPieChart"></canvas>
                                     </div>
                                     <hr>
-                                    Styling for the donut chart can be found in the
-                                    <code>/js/demo/chart-pie-demo.js</code> file.
                                 </div>
                             </div>
                         </div>
@@ -360,13 +356,13 @@
                     str += "<td>" + data['school'] + "% </td>";
                     let pre = "";
                     if(data['pred'] === "0"){
-                        pre += "비추천";
+                        pre += "<td><b><font color='red'>비추천</font></b></td>";
                     }else if(data['pred'] === "1"){
-                        pre += "보통";
+                        pre += "<td><b>보통</b></td>";
                     }else{
-                        pre += "적합";
+                        pre += "<td><b><font color='blue'>적합</font></b></td>";
                     }
-                    str += "<td>" + pre + "</td>";
+                    str += pre;
                     str += "</tr>";
                 });
 
