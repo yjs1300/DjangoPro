@@ -63,6 +63,7 @@ def signup(request):
         else:
             user = Member(m_id = m_id, m_name=m_name ,m_pwd = m_pwd, m_email = m_email)
             user.save()
+        
         return redirect("/login") # 가입 성공하면 로그인 페이지로 리다이렉트
 
 # 로그아웃
