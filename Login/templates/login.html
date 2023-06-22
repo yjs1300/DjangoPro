@@ -11,7 +11,8 @@
     <script defer src="{% static 'js/account.js' %}"></script>
     {% comment %} CSS연동 {% endcomment %}
     <link rel='stylesheet' type="text/css" href="{% static 'css/login.css' %}"/>
-   
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 <body>
 
@@ -24,17 +25,17 @@
       <input type="text" placeholder="Id" id="account1" name="account"/>
       <button id="checkiddouble">아이디 중복검사</button>
       <input type="email" placeholder="Email" id="email1" name="email" />
-       <div id="email_check"></div> 
+        <div id="email_check"></div>
       <input type="password" placeholder="Password" id="password1" name="password"/>
       <input type="text" placeholder="Name" id="username1" name="username"/>
-      <button type="submit" id="signup2">가입하기</button>
+      <button id="signup2">가입하기</button>
     </form>
   </div>
 
 
   {% comment %} 로그인 기능 {% endcomment %}
   <div class="form-container sign-in-container">
-    <form method="post" id='login' name="login"> 
+    <form method="post" id='login' name="login">
       {% csrf_token %}
       <h1>로그인</h1>
       <span></span>
@@ -65,6 +66,8 @@
     </div>
   </div>
 </div>
+
+
 <script>
 $(document).ready(function(){
   // 버튼 활성화 비활성화 기능 부여하기
@@ -88,7 +91,32 @@ $(document).ready(function(){
   });
 
   //====================================================
+
+  // 회원가입 
+  $("#signup2").on("click", function(e){
+    e.preventDefault();
+    if (signup.account.value == ""){
+      swal("ID","아이디를 다시 입력해주세요", "warning");
+      return false;
+    }
+    if (signup.email.value == ""){
+      swal("EMAIL","이메일을 다시 입력해주세요", "warning");
+      return false;
+    }
+    if (signup.password.value == ""){
+      swal("PASSWORD","비밀번호를 다시 입력해주세요", "warning");
+      return false;
+    }
+    if (signup.username.value == ""){
+      swal("NAME","이름을 다시 입력해주세요", "warning");
+      return false;
+    }
+
+    swal("SIGNUP","회원가입을 원하시면 'OK'를 눌러주세요", "success").then((value) => {signup.submit()});
+
+  });
   
+  /*
   function validateField2(field, buttonElement2) {
     var value2 = field.val();
     if (value2 === "") {
@@ -111,6 +139,7 @@ $(document).ready(function(){
   $("#password1").click("focusout",function(){
     validateField2($("#password1"),  $("#signup2"));
   });
+  */
   
   //===========================================================
   
@@ -138,10 +167,10 @@ $(document).ready(function(){
     }else {
       $("#email_check").html("유효하지 않습니다");
     }
-  })
- //===================================================
+  });
+
   $(".home").on("click",function(){
-       location.href = "/";
+    location.href = "/";
   });
 
 });
