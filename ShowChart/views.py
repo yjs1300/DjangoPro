@@ -6,7 +6,7 @@ from django.http import JsonResponse
 from folium.plugins import MarkerCluster
 import numpy as np
 import matplotlib.pyplot as plt
-
+from folium import plugins
 
 # Create your views here.
 def index(request):
@@ -63,9 +63,10 @@ def charts(request):
     
     maps1 = m._repr_html_()
     
-        # 서울시 지자체별 파일
-    state_geo = 'https://raw.githubusercontent.com/southkorea/seoul-maps/master/kostat/2013/json/seoul_municipalities_geo_simple.json'
+    # 서울시 지자체별 파일
+    # state_geo = 'https://raw.githubusercontent.com/southkorea/seoul-maps/master/kostat/2013/json/seoul_municipalities_geo_simple.json'
     
+
     # 서울시 유동인구 파일(행정구역별,나이대별,총이동)
     df = pd.read_csv('./seoul_float_pop_age.csv',encoding='utf-8')
     p=df[['행정구역별','총이동']]
@@ -75,7 +76,7 @@ def charts(request):
     
     # 시각화 
     folium.Choropleth(
-        geo_data=state_geo,
+        geo_data=geo,
         name='자치구 별 유동인구',
         data=p,
         columns=('행정구역별','총이동'),
@@ -111,12 +112,13 @@ def charts(request):
     
     coords = sub
     # marker cluster 객체를 생성
-    marker_cluster = MarkerCluster().add_to(m)
+    datas = zip(coords['위도'], coords['경도'])
+    plugins.FastMarkerCluster(data=datas).add_to(m)
    
     
     # 데이터의 위도, 경도를 받아서 마커를 생성함.
-    for lat, long in zip(coords['위도'], coords['경도']):
-        folium.Marker([lat, long], icon = folium.Icon(color="green")).add_to(marker_cluster)
+    # for lat, long in zip(coords['위도'], coords['경도']):
+    #     folium.Marker([lat, long], icon = folium.Icon(color="green")).add_to(marker_cluster)
     
     # 템플릿에 보내기 위해서 사용함.
     maps3 = m._repr_html_()
@@ -141,11 +143,13 @@ def charts(request):
     
     coords = sub2
     # marker cluster 객채를 생성
-    marker_cluster = MarkerCluster().add_to(m2)
+    datas = zip(coords['위도'], coords['경도'])
+    plugins.FastMarkerCluster(data=datas).add_to(m2)
+    
     
     # 데이터의 위도, 경도를 받아서 마커를 생성함.
-    for lat, long in zip(coords['위도'], coords['경도']):
-        folium.Marker([lat, long], icon = folium.Icon(color="green")).add_to(marker_cluster)
+    # for lat, long in zip(coords['위도'], coords['경도']):
+    #     folium.Marker([lat, long], icon = folium.Icon(color="green")).add_to(marker_cluster)
     
     # 템플릿에 보내기 위해서 사용함.
     maps4 = m2._repr_html_()
