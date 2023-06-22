@@ -44,6 +44,7 @@
       <button type="submit" id="buttonlogn">로그인</button>
     </form>
   </div>
+  
 
   {% comment %} 화면전환기능 구현파트 {% endcomment %}
   <div class="overlay-container">
@@ -141,6 +142,8 @@ $(document).ready(function(){
   */
   
   //===========================================================
+  
+  
   $("#checkiddouble").click(function(){
     event.preventDefault();
     window.open("check","중복확인","width=400, height=300, top=20, center=50")
@@ -148,6 +151,7 @@ $(document).ready(function(){
     $("#checkid").val($("#account2").val());
   })
 
+  
   // 이메일 형식 체크 정규식
   // change 사용
   $("#email1").on("change",function(){
