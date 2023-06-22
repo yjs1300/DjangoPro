@@ -22,8 +22,9 @@
       {% csrf_token %}
       <h1> 회원가입 </h1>
       <input type="text" placeholder="Id" id="account1" name="account"/>
-      <button id="check">아이디 중복검사</button>
+      <button id="checkiddouble">아이디 중복검사</button>
       <input type="email" placeholder="Email" id="email1" name="email" />
+       <div id="email_check"></div> 
       <input type="password" placeholder="Password" id="password1" name="password"/>
       <input type="text" placeholder="Name" id="username1" name="username"/>
       <button type="submit" id="signup2">가입하기</button>
@@ -81,7 +82,7 @@ $(document).ready(function(){
     validateField($("#password2"), $("#buttonlogn"));
   });
 
-  
+  //====================================================
   
   function validateField2(field, buttonElement2) {
     var value2 = field.val();
@@ -93,7 +94,7 @@ $(document).ready(function(){
   }
   
   $("#account1").click("focusout",function(){
-    validateField2($("#account1"),  $("#signup2"));
+    validateField2($("#account1"), $("#signup2"));
   });
   
   
@@ -105,16 +106,31 @@ $(document).ready(function(){
   $("#password1").click("focusout",function(){
     validateField2($("#password1"),  $("#signup2"));
   });
-
   
-  $("#check").click(function(){
+  //===========================================================
+  $("#checkiddouble").click(function(){
     event.preventDefault();
     window.open("check","중복확인","width=400, height=300, top=20, center=50")
     // url링크 부여
     $("#checkid").val($("#account2").val());
   })
-  
-  
+
+  // 이메일 형식 체크 정규식
+  // change 사용
+  $("#email1").on("change",function(){
+    // 정규식 사용하기
+    var pattern = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+    // 
+    let ss = $("#email1").val();
+    
+    //console.log(pattern.test(ss));
+    // test 정규 표현식과의 비교를 위함.
+    if(pattern.test(ss)){
+      $("#email_check").empty();
+    }else {
+      $("#email_check").html("유효하지 않습니다");
+    }
+  })
 });
 </script>
 </body>
