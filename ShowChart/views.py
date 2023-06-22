@@ -43,8 +43,8 @@ def charts(request):
     for feature in geo['features']:
         code = feature['properties']['code']
         name = feature['properties']['name']
-        print(code) 
-        print(name)
+        # print(code) 
+        # print(name)
         f.close()
 
     folium.Choropleth(
