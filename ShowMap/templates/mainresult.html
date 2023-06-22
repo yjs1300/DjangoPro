@@ -141,18 +141,20 @@
                                             <!--<td>{{ row.총이동 }} 명</td>-->
                                             <td>
                                                 {% if row.예측값 == 0 %}
-                                                    비추천
+                                                <font color="red"><b>비추천</b><font>
                                                 {% elif row.예측값 == 1 %}
-                                                    보통
+                                                <b>보통</b>
                                                 {% else %}
-                                                    적합
+                                                <font color="blue"><b>적합</b><font>
                                                 {% endif %}
                                             </td>
                                         </tr>
                                         {% endfor %}
                                 </table>
                             </div>
+                            &nbsp;&nbsp;&nbsp;<b>장소명</b>을 클릭해 예측 분석 결과에 대해 각 항목별로 얼마나 영향을 끼쳤는지를 확인해보세요.
                             <div style="float: right;">
+                                
                                 <form method="POST" action="/myhist/save" name="savefrm">{% csrf_token %}
                                     <input type="hidden" name="dataframe" value="{{ result }}">
                                     <button type="button" id="savebtn" class="btn btn-primary">결과 저장</button>
@@ -183,8 +185,7 @@
                                         <canvas id="myBarChart"></canvas>
                                     </div>
                                     <hr>
-                                    Styling for the bar chart can be found in the
-                                    <code>/js/demo/chart-bar-demo.js</code> file.
+                                    
                                 </div>
                             </div>
                         </div>
@@ -200,8 +201,7 @@
                                         <canvas id="myPieChart"></canvas>
                                     </div>
                                     <hr>
-                                    Styling for the donut chart can be found in the
-                                    <code>/js/demo/chart-pie-demo.js</code> file.
+                                   
                                 </div>
                             </div>
                         </div>
