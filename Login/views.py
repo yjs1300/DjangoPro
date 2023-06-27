@@ -13,32 +13,60 @@ def login(request):
     if request.method == "GET":
         return render(request, "login.html")
     
+    # login 요청이 들어왔을때
     elif request.method == "POST":
         m_id = request.POST.get('account')
         m_pwd = request.POST.get('password')
         
-        M_check = Member.objects.filter(m_id=m_id)
-        P_check = Member.objects.filter(m_pwd=m_pwd)
+        # DB에서 아이디 목록만 가져온다.
+        m_id_list = Member.objects.values_list('m_id', flat=True)
+        context={}
         
-        # 오류 
-        if M_check.count() == 0 or P_check.count() == 0:
-            return render(request,"error.html") 
-            
-            
-        
-        else:
-            user = Member.objects.get(m_id=m_id)
-            # print('m_pwd :', m_pwd)
-            # print('user.m_pwd :', user.m_pwd)
-            if (m_pwd == user.m_pwd ):
-                request.session['user'] = user.m_id
+        # print(m_id_list)
+        for i in range(len(m_id_list)):
+            if m_id == m_id_list[i]: # 아이디가 데이터베이스에 존재한다면
+                user = Member.objects.get(m_id=m_id)
+                # print('m_pwd :', m_pwd)
+                # print('user.m_pwd :', user.m_pwd)
+                if (m_pwd == user.m_pwd): # 비밀번호가 맞는지 확인하고
+                    request.session['user'] = user.m_id  # 맞는다면 세션을 생성한다.
+                    print('로그인 성공') 
+                    return redirect('/') # 로그인 성공시 홈으로 이동함.
                 
-                print('로그인 성공')
-                return redirect('/') # 로그인 성공시 홈으로 이동함.
-            else:
-                print('로그인 실패')
+                else: # 비밀번호가 일치하지 않는다면 
+                    context.clear()
+                    context["pwderror"] = "비밀번호가 일치하지 않습니다."
+                    return render(request, "login.html",context)
+                
+            else: # 아이디가 존재하지 않는다면
+                context["iderror"] = "아이디가 존재하지 않습니다."
+                
+        return render(request, "login.html", context)
+        
+        # if m_id_list == m_id:
+        
+        # M_check = Member.objects.filter(m_id=m_id)
+        # P_check = Member.objects.filter(m_pwd=m_pwd)
+        
+        # # 오류 
+        # if M_check.count() == 0 or P_check.count() == 0:
+        #     return render(request,"error.html") 
+            
+            
+        
+        # else:
+        #     user = Member.objects.get(m_id=m_id)
+        #     # print('m_pwd :', m_pwd)
+        #     # print('user.m_pwd :', user.m_pwd)
+        #     if (m_pwd == user.m_pwd ):
+        #         request.session['user'] = user.m_id
+                
+        #         print('로그인 성공')
+        #         return redirect('/') # 로그인 성공시 홈으로 이동함.
+        #     else:
+        #         print('로그인 실패')
        
-        return render(request, "login.html",)
+        # return render(request, "login.html",)
                  
                    
                  
