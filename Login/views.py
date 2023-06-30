@@ -121,12 +121,12 @@ def checkid(request):
         # db 관련은 try except 사용하기    
         try:
             Member.objects.get(m_id=id)
-            print("중복됨")
+            #print("중복됨")
             dic = {'result':"true"}
             result.append(dic)
         
         except Member.DoesNotExist:
-            print("중복없음")
+            #print("중복없음")
             dic = {'result':"fall"}
             result.append(dic)
 

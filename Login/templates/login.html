@@ -22,6 +22,8 @@
   <div class="form-container sign-up-container">
     <form method="post" action="signup/" id="signup" name="signup">
       {% csrf_token %}
+      <input type='hidden' id='regChk' value='n'><!--이메일 정규식 충족 확인-->
+      <input type='hidden' id='dupChk' value='n'><!--아이디 중복체크 여부 확인-->
       <h1> 회원가입 </h1>
       <input type="text" placeholder="Id" id="account1" name="account"/>
       <button id="checkiddouble">아이디 중복검사</button>
@@ -83,10 +85,6 @@ $(document).ready(function(){
     } else { // 아이디 비밀번호가 다 입력 되었다면 제출하기
       submit();
     }
-
-
-
-
   })
   // 버튼 활성화 비활성화 기능 부여하기
  /* function validateField(field,buttonElement) {
@@ -110,10 +108,17 @@ $(document).ready(function(){
 
   //====================================================
 
+  $('#account1').on('input', function() {
+    // 사용자가 입력할 때마다 실행
+    $('#dupChk').val('n') 
+  });
+
   // 회원가입 
   $("#signup2").on("click", function(e){
-    e.preventDefault();
+    e.preventDefault();//클릭 이벤트의 기본 행동을 중단
+
     if (signup.account.value == ""){
+      // SweetAlert 라이브러리의 함수로, 브라우저의 기본 알림 대신 아름답고 사용자 정의 가능한 모달 대화상자를 생성
       swal("ID","아이디를 다시 입력해주세요", "warning");
       return false;
     }
@@ -129,10 +134,20 @@ $(document).ready(function(){
       swal("NAME","이름을 다시 입력해주세요", "warning");
       return false;
     }
-
+    
+    if($('#dupChk').val() != 'y'){
+      swal("ID",'아아디 중복확인을 해주세요', "warning")
+      return false;
+    }
+    else if($('#regChk').val() != 'y'){
+      swal(" ",'정보를 다시 입력해주세요', "warning")
+      return false;
+    }
+    
+    
     swal("SIGNUP","회원가입을 원하시면 'OK'를 눌러주세요", "success").then((value) => {signup.submit()});
-
   });
+
   
   /*
   function validateField2(field, buttonElement2) {
@@ -161,11 +176,12 @@ $(document).ready(function(){
   
   //===========================================================
   
-  // 회원가입시 아이디 중복확인 진행하기
+  // 회원가입시 아이디 중복확인 진행하기 - 팝업창 띄우기
   $("#checkiddouble").click(function(){
     event.preventDefault();
     window.open("check","중복확인","width=400, height=300, top=20, center=50")
-    // url링크 부여
+    //"check": 새로운 창이 로드할 웹 페이지의 URL
+    //"중복확인": 새로운 창의 이름
     $("#checkid").val($("#account2").val());
   })
 
@@ -182,8 +198,10 @@ $(document).ready(function(){
     // test 정규 표현식과의 비교를 위함.
     if(pattern.test(ss)){
       $("#email_check").empty();
+      $('#regChk').val('y');
     }else {
       $("#email_check").html("유효하지 않습니다");
+      $('#regChk').val('n');
     }
   });
 
