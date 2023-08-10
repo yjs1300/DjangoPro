@@ -11,10 +11,15 @@
 - 활용 기술
     
     Django: 서버 시스템 인터페이스로 Django 웹 프레임워크를 사용했다.
-    MTV 패턴을 사용해 웹 개발을 용이하게 할 수 있었다. Model의 ORM과 template의 기능을 적극 활용했다.	
+  
+    MTV 패턴을 사용해 웹 개발을 용이하게 할 수 있었다. Model의 ORM과 template의 기능을 적극 활용했다.
+  
     ML/DL: 데이터 마이닝, 수집, 전처리 후 scikit-learn, statsmodels, xgboost을 사용해 모델링했다.
+  
     bootstrap: 레이아웃 기능 활용. 반응형 웹 제작, UX/UI를 최적화함
+  
     AWS(EC2): 클라우드 서버로 서비스했다.
+  
     github: 깃헙을 통한 협업이 이루어졌다.
     
 - 개 요
